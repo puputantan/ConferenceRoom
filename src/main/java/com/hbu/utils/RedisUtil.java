@@ -40,7 +40,7 @@ import redis.clients.jedis.Jedis;
 //     }  
 // 
 	//Redis服务器IP
-	    private static String ADDR = "175.24.109.9";
+	    private static String ADDR = "";
 	    //Redis的端口号
 	    private static Integer PORT = 6379;
 	    //访问密码  有就写，无就空
