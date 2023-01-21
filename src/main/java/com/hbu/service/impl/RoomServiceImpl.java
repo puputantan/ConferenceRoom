@@ -66,8 +66,8 @@ public class RoomServiceImpl implements RoomService {
     }
     //本系会议室显示
     @Override
-    public List<RoomModel> show1(long number){
-        String department = tUserMapper.selectDepartment(number);
+    public List<RoomModel> show1(String username){
+        String department = tUserMapper.selectDepartment(username);
         int departmentcode= dicConferenceRoomTypeMapper.selectByDescription(department);
         List<TConferenceRoom> list = tConferenceRoomMapper.selectByDepartment(departmentcode);
         List<RoomModel> listmodel = new ArrayList<RoomModel>();

@@ -29,8 +29,8 @@ public interface TAdminMapper {
     int updateByPrimaryKey(TAdmin record);
 
     //通过工号查出密码pw
-    String selectByNumber(@Param("number") long number);
+    String selectByUsername(@Param("username") String username);
 
     //通过工号查出邮箱
-    String selectMailByNumber(@Param("number") long number);
+    String selectMailByUsername(@Param("username") String username);
 }

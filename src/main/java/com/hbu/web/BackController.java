@@ -9,20 +9,16 @@ import com.hbu.entity.TUser;
 import com.hbu.models.*;
 import com.hbu.service.*;
 import com.hbu.utils.RedisUtil;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,12 +50,14 @@ public class BackController extends BaseController {
      */
 
     //1.后台登录 back/login——只有学校后勤管理人员可以登录
-    @RequestMapping(value = "adminLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "adminLogin", method = RequestMethod.POST)
     @ResponseBody
-    private Result<String> login( @RequestParam("number") long number, @RequestParam("password") String password ) {
-        System.out.println("$$$$$$ back/login2方法的入参为：number="+number+",password="+password);
+    private Result<String> login(@RequestBody List<HashMap<String, String>> mapList) {
+        String username = mapList.get(0).get("username");
+        String password = mapList.get(0).get("password");
+        System.out.println("$$$$$$ back/login2方法的入参为：username="+username+",password="+password);
         Result<String> result=new Result<String>();
-        int tAdmin=loginService.backlogin(number,password);
+        int tAdmin=loginService.backlogin(username,password);
 
         if(tAdmin==-1) {
             result.setCode("999999");
@@ -72,15 +70,15 @@ public class BackController extends BaseController {
             result.setMessage("登录成功");
             /**
              * 设置cookie，并存到redis中。
-             * 但是redis的value值，目前是number值。。。。实际应该是uuid（将number随机也行）
+             * 但是redis的value值，目前是username值。。。。实际应该是uuid（将username随机也行）
              */
             String token2=getId().replace("-", "");
-            RedisUtil.set(token2,String.valueOf(number));
+            RedisUtil.set(token2,String.valueOf(username));
             result.setCode("000000");
             result.setMessage("登录成功");
             result.setData(token2);
         }
-        System.out.println("$$$$$$ back/login2方法的入参为：number="+number+",password="+password+"back/login2方法的返回参数："+gson.toJson(result));
+        System.out.println("$$$$$$ back/login2方法的入参为：username="+username+",password="+password+"back/login2方法的返回参数："+gson.toJson(result));
         return result;
     }
 
@@ -89,10 +87,10 @@ public class BackController extends BaseController {
      */
     @RequestMapping(value = "forgetpw", method = RequestMethod.GET)
     @ResponseBody
-    private Result<String> forgetpw( @RequestParam("number") long number, @RequestParam("mailbox") String mailbox ) {
-        System.out.println("$$$$$$ back/login2方法的入参为：number="+number+",mailbox="+mailbox);
+    private Result<String> forgetpw( @RequestParam("username") String username, @RequestParam("mailbox") String mailbox ) {
+        System.out.println("$$$$$$ back/login2方法的入参为：username="+username+",mailbox="+mailbox);
         Result<String> result=new Result<String>();
-        int tAdmin=loginService.admineforgetpw(number,mailbox);
+        int tAdmin=loginService.admineforgetpw(username,mailbox);
         System.out.println(tAdmin);
         if(tAdmin==-1) {
             result.setCode("999999");
@@ -104,7 +102,7 @@ public class BackController extends BaseController {
             result.setCode("000000");
             result.setMessage("发送成功");
         }
-        System.out.println("$$$$$$ back/login2方法的入参为：number="+number+",mailbox="+mailbox+"back/login2方法的返回参数："+gson.toJson(result));
+        System.out.println("$$$$$$ back/login2方法的入参为：username="+username+",mailbox="+mailbox+"back/login2方法的返回参数："+gson.toJson(result));
         return result;
     }
 
@@ -474,7 +472,7 @@ public class BackController extends BaseController {
      */
     @RequestMapping(value = "userInsert", method = RequestMethod.POST)
     @ResponseBody
-    private Result<String> userInsert(@RequestParam("number") long number,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("department") String department, @RequestParam("phone") String phone, @RequestParam("mailbox") String mailbox,HttpServletRequest request) throws ParseException {
+    private Result<String> userInsert(@RequestParam("username") String username,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("department") String department, @RequestParam("phone") String phone, @RequestParam("mailbox") String mailbox,HttpServletRequest request) throws ParseException {
       //  String userid = getUserId(request);
         System.out.println("$$$$$$ back/userInsert方法的入参为：调用者id:");
         Result<String> result = new Result<String>();
@@ -486,7 +484,7 @@ public class BackController extends BaseController {
         }
         //List<RoomModel> listmodel=new ArrayList<RoomModel>();
         TUser t = new TUser();      
-        t.setNumber(number);
+        t.setUsername(username);
         t.setName(name);
         t.setPassword(password);
         t.setDepartment(department);
@@ -514,7 +512,7 @@ public class BackController extends BaseController {
      */
     @RequestMapping(value = "userUpdate", method = RequestMethod.POST)
     @ResponseBody
-    private Result<String> userUpdate(@RequestParam("userId") int userId,@RequestParam("number") long number,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("department") String department, @RequestParam("phone") String phone, @RequestParam("mailbox") String mailbox,HttpServletRequest request) {
+    private Result<String> userUpdate(@RequestParam("userId") int userId,@RequestParam("username") String username,@RequestParam("name") String name,@RequestParam("password") String password,@RequestParam("department") String department, @RequestParam("phone") String phone, @RequestParam("mailbox") String mailbox,HttpServletRequest request) {
 //        String userid = getUserId(request);
         System.out.println("$$$$$$ back/userUpdate方法的入参为：调用者id:");
         Result<String> result = new Result<String>();
@@ -526,7 +524,7 @@ public class BackController extends BaseController {
         }
         TUser t = new TUser(); 
         t.setId(userId);
-        t.setNumber(number);
+        t.setUsername(username);
         t.setName(name);
         t.setPassword(password);
         t.setDepartment(department);

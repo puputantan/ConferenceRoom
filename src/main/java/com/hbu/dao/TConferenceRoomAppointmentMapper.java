@@ -47,9 +47,9 @@ public interface TConferenceRoomAppointmentMapper {
 
     int updateByPrimaryKey2(@Param("id") int id);//系主任通过：更新审核状态为2
 
-    List<AppointmentModel> selectByNumber(@Param("number") long number);//通过教职工号查所有
+    List<AppointmentModel> selectByUsername(@Param("username") String username);//通过教职工号查所有
 
-    List<OwnAppointModel> selectByNumber2(@Param("number") long number);//通过教职工号查所有
+    List<OwnAppointModel> selectByUsername2(@Param("username") String username);//通过教职工号查所有
 
     List<TConferenceRoomAppointment> selectByDateRoomId(@Param("date") String date,@Param("conferenceRoomId") long conferenceRoomId);
 }

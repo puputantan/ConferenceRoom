@@ -1,9 +1,5 @@
 package com.hbu.models;
 
-import com.hbu.entity.TUser;
-
-import java.util.List;
-
 public class AppointmentModel {
 	private int appointId;
 
@@ -36,7 +32,7 @@ public class AppointmentModel {
 
     private String appointerDepartment;
 
-    private long appointerNumber;
+    private String appointerUsername;
 
     private String examineReason;
 
@@ -180,12 +176,12 @@ public class AppointmentModel {
         this.appointerName = appointerName;
     }
 
-    public long getAppointerNumber() {
-        return appointerNumber;
+    public String getAppointerUsername() {
+        return appointerUsername;
     }
 
-    public void setAppointerNumber(long appointerNumber) {
-        this.appointerNumber = appointerNumber;
+    public void setAppointerUsername(String appointerUsername) {
+        this.appointerUsername = appointerUsername;
     }
 
     public int getAppointId() {

@@ -14,9 +14,9 @@ public class TConferenceRoomAppointment {
 
     private Integer id;
 
-    private String username;
+    private String name;
 
-    private Long number;
+    private String username;
 
     private Long conferenceRoomId;
 
@@ -56,20 +56,20 @@ public class TConferenceRoomAppointment {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
+        this.username = username;
     }
 
     public Long getConferenceRoomId() {

@@ -6,11 +6,11 @@ import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisConnect {
 	//Redis服务器IP
-    private static String ADDR = "ip";
+    private static String ADDR = "127.0.0.1";
     //Redis的端口号
     private static Integer PORT = 6379;
     //访问密码  有就写，无就空
-    private static String AUTH="";
+    private static String AUTH="123456";
 
     //可用连接实例的最大数目，默认为8；
     //如果赋值为-1，则表示不限制，如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
@@ -77,8 +77,8 @@ public class RedisConnect {
     }
     //测试redis连接是否成功，如果是“PONG”,说明连接成功
     public static void main(String[] args) {
-        Jedis jedis = new Jedis("ip",6379);
-        jedis.auth("");
+        Jedis jedis = new Jedis(ADDR,6379);
+        jedis.auth("123456");
         System.out.println(jedis.ping());
     }
 }

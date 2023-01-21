@@ -1,10 +1,8 @@
 # ConferenceRoom
 
-#### 文件夹描述：路径：ConferenceRoom\src\main
-java文件夹：包含所有后端代码（java语言）
-resources文件夹：包含spring配置文件、数据库配置文件（jdbc.properties）、mybatis的xml文件
-webapp文件夹：包含所有前端代码（front用户端、back管理员端，html、css、js文件）
+#### file description：url：ConferenceRoom\src\main
+java：Contains all backend code (java language)
+resources：Contains spring configuration file, database configuration file (jdbc.properties), xml file of mybatis
+webapp：Contains all front-end code (front client, back administrator, html, css, js files)
 
-####
-后台开发人员：刘思彤 1173080299@qq.com
-
+a

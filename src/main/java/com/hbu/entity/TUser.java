@@ -7,7 +7,7 @@ public class TUser {
 
     private String uuid;
 
-    private Long number;
+    private String username;
 
     private String password;
 
@@ -63,12 +63,12 @@ public class TUser {
         this.uuid = uuid == null ? null : uuid.trim();
     }
 
-    public Long getNumber() {
-        return number;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

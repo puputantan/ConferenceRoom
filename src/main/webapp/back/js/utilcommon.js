@@ -1,6 +1,6 @@
 var Config = {
-    // host:"http://localhost:8085/ConferenceRoom"
-	host:"http://175.24.109.9:8080"
+	host:"http://localhost:8080/ConferenceRoom"
+	//host:"http://175.24.109.9:8080"
 
 }
 /**

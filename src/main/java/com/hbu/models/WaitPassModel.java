@@ -3,9 +3,9 @@ package com.hbu.models;
 public class WaitPassModel {
     private Integer appointmentId;//预约id
 
-    private String username;
+    private String name;
 
-    private long number;
+    private String username;
 
     private String department;
 
@@ -57,20 +57,20 @@ public class WaitPassModel {
         this.appointmentId = appointmentId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public long getNumber() {
-        return number;
-    }
-
-    public void setNumber(long number) {
-        this.number = number;
     }
 
     public String getDepartment() {
@@ -166,8 +166,8 @@ public class WaitPassModel {
     public String toString() {
         return "WaitPassModel{" +
                 "appointmentId=" + appointmentId +
-                ", username='" + username + '\'' +
-                ", number=" + number +
+                ", username='" + name + '\'' +
+                ", number=" + username +
                 ", department='" + department + '\'' +
                 ", conferenceRoomId=" + conferenceRoomId +
                 ", roomName='" + roomName + '\'' +

@@ -7,7 +7,7 @@ public class TAdmin {
 
     private String uuid;
 
-    private Long number;
+    private String username;
 
     private String name;
 
@@ -41,12 +41,12 @@ public class TAdmin {
         this.uuid = uuid == null ? null : uuid.trim();
     }
 
-    public Long getNumber() {
-        return number;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {

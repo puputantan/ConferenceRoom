@@ -9,15 +9,12 @@ import com.hbu.service.*;
 import com.hbu.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,12 +40,14 @@ public class FrontController extends BaseController{
     private DicTimeMapper dicTimeMapper;
 
     //1.前台登录 front/login
-    @RequestMapping(value = "userLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "userLogin", method = RequestMethod.POST)
     @ResponseBody
-    private Result<String> login(@RequestParam("number") long number, @RequestParam("password") String password ) {
-        System.out.println("$$$$$$ /front/login方法的入参为：number="+number+",password="+password);
+    private Result<String> login(@RequestBody HashMap<String, String> map) {
+        String username = map.get("username");
+        String password = map.get("password");
+        System.out.println("$$$$$$ /front/login方法的入参为：username="+username+",password="+password);
         Result<String> result=new Result<String>();
-        int tAdmin=loginService.frontlogin(number,password);
+        int tAdmin=loginService.frontlogin(username,password);
         if(tAdmin==-1) {
             result.setCode("999999");
             result.setMessage("用户不存在");
@@ -60,15 +59,15 @@ public class FrontController extends BaseController{
             result.setMessage("登录成功");
             /**
              * 设置cookie，并存到redis中。
-             * 但是redis的value值，目前是number值。。。。实际应该是uuid（将number随机也行）
+             * 但是redis的value值，目前是username值。。。。实际应该是uuid（将username随机也行）
              */
             String token=getId().replace("-", "");
-            RedisUtil.set(token,String.valueOf(number));
+            RedisUtil.set(token,String.valueOf(username));
             result.setCode("000000");
             result.setMessage("登录成功");
             result.setData(token);
         }
-        System.out.println("$$$$$$ /front/login方法的入参为：number="+number+",password="+password+"/front/login方法的返回参数："+gson.toJson(result));
+        System.out.println("$$$$$$ /front/login方法的入参为：username="+username+",password="+password+"/front/login方法的返回参数："+gson.toJson(result));
         return result;
     }
 
@@ -77,10 +76,10 @@ public class FrontController extends BaseController{
      */
     @RequestMapping(value = "userforgetpw", method = RequestMethod.GET)
     @ResponseBody
-    private Result<String> forgetpw( @RequestParam("number") long number, @RequestParam("mailbox") String mailbox ) {
-        System.out.println("$$$$$$ back/login2方法的入参为：number="+number+",mailbox="+mailbox);
+    private Result<String> forgetpw( @RequestParam("username") String username, @RequestParam("mailbox") String mailbox ) {
+        System.out.println("$$$$$$ back/login2方法的入参为：username="+username+",mailbox="+mailbox);
         Result<String> result=new Result<String>();
-        int tAdmin=loginService.userforgetpw(number,mailbox);
+        int tAdmin=loginService.userforgetpw(username,mailbox);
 
         if(tAdmin==-1) {
             result.setCode("999999");
@@ -92,7 +91,7 @@ public class FrontController extends BaseController{
             result.setCode("000000");
             result.setMessage("发送成功");
         }
-        System.out.println("$$$$$$ back/login2方法的入参为：number="+number+",mailbox="+mailbox+"back/login2方法的返回参数："+gson.toJson(result));
+        System.out.println("$$$$$$ back/login2方法的入参为：username="+username+",mailbox="+mailbox+"back/login2方法的返回参数："+gson.toJson(result));
         return result;
     }
       /**
@@ -100,9 +99,9 @@ public class FrontController extends BaseController{
      */
     @RequestMapping(value = "register", method = RequestMethod.GET)
     @ResponseBody
-    private Result<String> register( @RequestParam("number") long number,@RequestParam("department")String department,@RequestParam("name")String name ,@RequestParam("mailbox") String mailbox ,@RequestParam("password")String password ) {
+    private Result<String> register( @RequestParam("username") String username,@RequestParam("department")String department,@RequestParam("name")String name ,@RequestParam("mailbox") String mailbox ,@RequestParam("password")String password ) {
         Result<String> result=new Result<String>();
-        int tAdmin=loginService.userregister(number,mailbox,password,name,department);
+        int tAdmin=loginService.userregister(username,mailbox,password,name,department);
 
         if(tAdmin != 1) {
             result.setCode("999999");
@@ -266,9 +265,8 @@ public class FrontController extends BaseController{
             result.setMessage("请登录");
             return result;
         }
-        String usernum = getUserId(request);
-        long usernumber=Long.parseLong(usernum);
-        List<RoomModel> list=roomService.show1(usernumber);
+        String username = getUserId(request);
+        List<RoomModel> list=roomService.show1(username);
 
         if(list == null ) {
             result.setCode("111111");
@@ -323,9 +321,8 @@ public class FrontController extends BaseController{
             result.setMessage("请登录");
             return result;
         }
-        String usernum = getUserId(request);
-        long usernumber=Long.parseLong(usernum);
-        System.out.println("$$$$$$ /front/ownerAppointment方法的入参为：调用者id:"+usernumber);
+        String username = getUserId(request);
+        System.out.println("$$$$$$ /front/ownerAppointment方法的入参为：调用者id:"+username);
         AppointmentModel model = new AppointmentModel();
         model.setTheme(theme);
         model.setDate(date);
@@ -341,7 +338,7 @@ public class FrontController extends BaseController{
         long roomId2 =Long.parseLong(roomId.replace("roomId",""));
         model.setRoomId(roomId2);
         model.setNum(num);
-        model.setAppointerNumber(usernumber);
+        model.setAppointerUsername(username);
         int nn = conferenceService.ownerinsert(model);
         if(nn != 0) {
             result.setCode("111111");
@@ -368,9 +365,8 @@ public class FrontController extends BaseController{
             result.setMessage("请登录");
             return result;
         }
-        String usernum = getUserId(request);
-        long usernumber=Long.parseLong(usernum);
-        System.out.println("$$$$$$ /front/ownerAppointment方法的入参为：调用者id:"+usernumber);
+        String username = getUserId(request);
+        System.out.println("$$$$$$ /front/ownerAppointment方法的入参为：调用者id:"+username);
         AppointmentModel model = new AppointmentModel();
         model.setTheme(theme);
         model.setDate(date);
@@ -386,7 +382,7 @@ public class FrontController extends BaseController{
         long roomId2 =Long.parseLong(roomId.replace("roomId",""));
         model.setRoomId(roomId2);
         model.setNum(num);
-        model.setAppointerNumber(usernumber);
+        model.setAppointerUsername(username);
         model.setSpecialneeds(specialneeds);
         int nn = conferenceService.otherinsert(model);
         if(nn != 0) {
@@ -414,10 +410,9 @@ public class FrontController extends BaseController{
             result.setMessage("请登录");
             return result;
         }
-        String usernum = getUserId(request);
-        long usernumber=Long.parseLong(usernum);
-        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+usernumber);
-        PageInfo<OwnAppointModel> list = conferenceService.myAppointShow(usernumber,page ,10);
+        String username = getUserId(request);
+        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+username);
+        PageInfo<OwnAppointModel> list = conferenceService.myAppointShow(username,page ,10);
         if(list == null) {
             result.setCode("888888");
             result.setMessage("用户不存在");
@@ -426,7 +421,7 @@ public class FrontController extends BaseController{
             result.setMessage("登录成功");
             result.setData(list);
         }
-        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+usernumber+"front/appointShow方法的返回参数："+gson.toJson(result)+"#######");
+        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+username+"front/appointShow方法的返回参数："+gson.toJson(result)+"#######");
         return  result;
     }
 
@@ -443,14 +438,13 @@ public class FrontController extends BaseController{
 //            result.setMessage("请登录");
 //            return result;
 //        }
-//        String usernum = getUserId(request);
-//        long usernumber=Long.parseLong(usernum);
-//        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+usernumber);
-//        List<AppointmentModel> list = conferenceService.myConferenceShow(usernumber);
+//        String username = getUserId(request);
+//        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+username);
+//        List<AppointmentModel> list = conferenceService.myConferenceShow(username);
 //        result.setCode("000000");
 //        result.setMessage("登录成功");
 //        result.setData(list);
-//        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+usernumber+"front/appointShow方法的返回参数："+gson.toJson(result)+"#######");
+//        System.out.println("$$$$$$ front/appointShow方法的入参为：调用者id:"+username+"front/appointShow方法的返回参数："+gson.toJson(result)+"#######");
 //        return  result;
 //    }
     /**

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RoomService {
     public List<RoomModel> show();//跨系
-    public List<RoomModel> show1(long number);//本系
+    public List<RoomModel> show1(String username);//本系
     public List<RoomModel> show3();//后台
 
     public List<FreeModel> freeRoomShow(String date);//空闲会议室查询

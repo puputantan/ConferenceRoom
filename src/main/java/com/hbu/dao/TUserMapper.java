@@ -32,15 +32,15 @@ public interface TUserMapper {
 
     List<TUser> selectAll();//查全部
 
-    TUser selectAllByNumber(@Param("number") long number);//通过教职工号查所有，教职工号是唯一标识
+    TUser selectAllByUsername(@Param("username") String username);//通过教职工号查所有，教职工号是唯一标识
 
     List<TUser> selectByDepartment(@Param("department") String department); //根据所在部门查所有
 
-    String selectDepartment(@Param("number") long number);//通过工号查找所在部门
+    String selectDepartment(@Param("username") String username);//通过工号查找所在部门
 
     TUser selectByUUid(@Param("uuid") String uuid);//通过uuid查找到工号和姓名等
 
-    String selectByNumber(@Param("number") long number);  //通过工号查出密码pw
+    String selectByUsername(@Param("username") String username);  //通过工号查出密码pw
 
-    String selectMailByNumber(@Param("number") long number);  //通过工号查出邮箱
+    String selectMailByUsername(@Param("username") String username);  //通过工号查出邮箱
 }

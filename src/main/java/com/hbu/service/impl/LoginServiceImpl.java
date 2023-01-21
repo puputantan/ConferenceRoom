@@ -16,8 +16,8 @@ public class LoginServiceImpl  implements LoginService {
     private TAdminMapper tAdminMapper;
 
     @Override
-    public int backlogin(long number, String password){
-        String pw=tAdminMapper.selectByNumber(number);
+    public int backlogin(String username, String password){
+        String pw=tAdminMapper.selectByUsername(username);
         System.out.println(pw);
         if (pw == null){
             return -1;
@@ -29,8 +29,8 @@ public class LoginServiceImpl  implements LoginService {
     }
 
     @Override
-    public int admineforgetpw(long number, String mailbox) {
-        String mail = tAdminMapper.selectMailByNumber(number);
+    public int admineforgetpw(String username, String mailbox) {
+        String mail = tAdminMapper.selectMailByUsername(username);
         System.out.println(mail);
         if (mail == null){
             return -1;
@@ -38,15 +38,15 @@ public class LoginServiceImpl  implements LoginService {
         else if(!mail.equals(mailbox)){
             return 0;
         }else{
-            String pw=tAdminMapper.selectByNumber(number);
+            String pw=tAdminMapper.selectByUsername(username);
             SendMail.sendMessage(mail,"你的密码是："+pw);
             return 1;
         }
     }
 
     @Override
-    public int frontlogin(long number, String password){
-        String pw = tUserMapper.selectByNumber(number);
+    public int frontlogin(String username, String password){
+        String pw = tUserMapper.selectByUsername(username);
         if (pw == null){
             return -1;
         }
@@ -59,9 +59,9 @@ public class LoginServiceImpl  implements LoginService {
     }
 
     @Override
-    public int userforgetpw(long number, String mailbox) {
+    public int userforgetpw(String username, String mailbox) {
 
-        String mail = tUserMapper.selectMailByNumber(number);
+        String mail = tUserMapper.selectMailByUsername(username);
         System.out.println(mail);
         if (mail == null){
             return -1;
@@ -69,18 +69,18 @@ public class LoginServiceImpl  implements LoginService {
         else if(!mail.equals(mailbox)){
             return 0;
         }else{
-            String pw=tUserMapper.selectByNumber(number);
+            String pw=tUserMapper.selectByUsername(username);
             SendMail.sendMessage(mail,"您的密码是："+pw);
             return 1;
         }
     }
     @Override
-    public int userregister(long number, String mailbox,String pw,String name,String department){
-        TUser user = tUserMapper.selectAllByNumber(number);
+    public int userregister(String username, String mailbox,String pw,String name,String department){
+        TUser user = tUserMapper.selectAllByUsername(username);
         if (user == null){
             //null说明没有注册过
             TUser t = new TUser();
-            t.setNumber(number);
+            t.setUsername(username);
             t.setMailbox(mailbox);
             t.setPassword(pw);
             t.setDepartment(department);

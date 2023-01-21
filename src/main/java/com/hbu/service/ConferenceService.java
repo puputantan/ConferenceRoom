@@ -17,7 +17,7 @@ public interface ConferenceService {
 
      int otherinsert(AppointmentModel model);
 
-    PageInfo<OwnAppointModel> myAppointShow(long number, int page, int size);
+    PageInfo<OwnAppointModel> myAppointShow(String username, int page, int size);
     //List<AppointmentModel>  myConferenceShow(long number);
 
     int appointDel( int id);

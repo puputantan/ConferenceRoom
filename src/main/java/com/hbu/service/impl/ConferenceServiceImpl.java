@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -79,9 +78,9 @@ public class ConferenceServiceImpl implements ConferenceService {
         t.setDate(model.getDate());
         t.setConferenceRoomId(model.getRoomId());
         t.setMaxNum(model.getNum());
-        t.setNumber(model.getAppointerNumber());
-        TUser t2=tUserMapper.selectAllByNumber(model.getAppointerNumber());
-        t.setUsername(t2.getName());
+        t.setUsername(model.getAppointerUsername());
+        TUser t2=tUserMapper.selectAllByUsername(model.getAppointerUsername());
+        t.setName(t2.getName());
         String starttime = model.getStarttime();
         String endtime = model.getEndtime();
         int startcode = dicTimeMapper.selectBydescription(starttime);
@@ -157,7 +156,7 @@ public class ConferenceServiceImpl implements ConferenceService {
                 re.setEndtimeCode(endcode);
                 re.setIsdel(true);
                 refConferenceMapper.insert(re);
-                TUser user = tUserMapper.selectAllByNumber(model.getAppointerNumber());
+                TUser user = tUserMapper.selectAllByUsername(model.getAppointerUsername());
                 String pass ="恭喜您预约的日期为"+model.getDate()+" ,时间为 "+time+"的会议预约成功了，祝您会议顺利。";
                 String receiver = user.getMailbox();
                 String messagecontent  = pass;
@@ -175,7 +174,7 @@ public class ConferenceServiceImpl implements ConferenceService {
             re.setEndtimeCode(endcode);
             re.setIsdel(true);
             refConferenceMapper.insert(re);
-            TUser user = tUserMapper.selectAllByNumber(model.getAppointerNumber());
+            TUser user = tUserMapper.selectAllByUsername(model.getAppointerUsername());
             String pass ="恭喜您预约的日期为"+model.getDate()+" ,时间为 "+time+"的会议预约成功了，祝您会议顺利。";
             String receiver = user.getMailbox();
             String messagecontent  = pass;
@@ -199,9 +198,9 @@ public class ConferenceServiceImpl implements ConferenceService {
         t.setDate(model.getDate());
         t.setConferenceRoomId(model.getRoomId());
         t.setMaxNum(model.getNum());
-        t.setNumber(model.getAppointerNumber());
-        TUser t2=tUserMapper.selectAllByNumber(model.getAppointerNumber());
-        t.setUsername(t2.getName());
+        t.setUsername(model.getAppointerUsername());
+        TUser t2=tUserMapper.selectAllByUsername(model.getAppointerUsername());
+        t.setName(t2.getName());
         String starttime = model.getStarttime();
         String endtime = model.getEndtime();
         int startcode = dicTimeMapper.selectBydescription(starttime);
@@ -242,11 +241,11 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     //我的预约显示
     @Override
-    public PageInfo<OwnAppointModel> myAppointShow(long number, int page , int size){
+    public PageInfo<OwnAppointModel> myAppointShow(String username, int page , int size){
         // 页码、每页的大小
         //startPage(1,10)第一个数表示第几页，第二个数表示每页有多少个
         PageHelper.startPage(page, size,true);
-        List<OwnAppointModel> list =tConferenceRoomAppointmentMapper.selectByNumber2(number);
+        List<OwnAppointModel> list =tConferenceRoomAppointmentMapper.selectByUsername2(username);
         for(int i=0;i<list.size();i++){
             long roomId = list.get(i).getConferenceRoomId();
             TConferenceRoom t= tConferenceRoomMapper.selectByPrimaryKey(roomId);

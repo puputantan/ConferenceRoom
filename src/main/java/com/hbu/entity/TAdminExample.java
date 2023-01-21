@@ -235,63 +235,63 @@ public class TAdminExample {
             return (Criteria) this;
         }
 
-        public Criteria andNumberIsNull() {
-            addCriterion("number is null");
+        public Criteria andUsernameIsNull() {
+            addCriterion("username is null");
             return (Criteria) this;
         }
 
-        public Criteria andNumberIsNotNull() {
-            addCriterion("number is not null");
+        public Criteria andUsernameIsNotNull() {
+            addCriterion("username is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNumberEqualTo(Long value) {
-            addCriterion("number =", value, "number");
+        public Criteria andUsernameEqualTo(String value) {
+            addCriterion("username =", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotEqualTo(Long value) {
-            addCriterion("number <>", value, "number");
+        public Criteria andUsernameNotEqualTo(String value) {
+            addCriterion("username <>", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberGreaterThan(Long value) {
-            addCriterion("number >", value, "number");
+        public Criteria andUsernameGreaterThan(String value) {
+            addCriterion("username >", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberGreaterThanOrEqualTo(Long value) {
-            addCriterion("number >=", value, "number");
+        public Criteria andUsernameGreaterThanOrEqualTo(String value) {
+            addCriterion("username >=", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLessThan(Long value) {
-            addCriterion("number <", value, "number");
+        public Criteria andUsernameLessThan(String value) {
+            addCriterion("username <", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLessThanOrEqualTo(Long value) {
-            addCriterion("number <=", value, "number");
+        public Criteria andUsernameLessThanOrEqualTo(String value) {
+            addCriterion("username <=", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberIn(List<Long> values) {
-            addCriterion("number in", values, "number");
+        public Criteria andUsernameIn(List<String> values) {
+            addCriterion("username in", values, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotIn(List<Long> values) {
-            addCriterion("number not in", values, "number");
+        public Criteria andUsernameNotIn(List<String> values) {
+            addCriterion("username not in", values, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberBetween(Long value1, Long value2) {
-            addCriterion("number between", value1, value2, "number");
+        public Criteria andUsernameBetween(String value1, String value2) {
+            addCriterion("username between", value1, value2, "username");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotBetween(Long value1, Long value2) {
-            addCriterion("number not between", value1, value2, "number");
+        public Criteria andUsernameNotBetween(String value1, String value2) {
+            addCriterion("username not between", value1, value2, "username");
             return (Criteria) this;
         }
 

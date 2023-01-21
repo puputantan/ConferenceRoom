@@ -36,7 +36,7 @@ public class UserManageServiceImpl implements UserManageService {
     @Override
     public int insert(TUser t){
         TUser user = new TUser();
-        user.setNumber(t.getNumber());
+        user.setUsername(t.getUsername());
         user.setPassword(t.getPassword());
         user.setName(t.getName());
         user.setMailbox(t.getMailbox());
@@ -57,7 +57,7 @@ public class UserManageServiceImpl implements UserManageService {
     public int update(TUser t){
     	TUser user = new TUser();
     	user.setId(t.getId());
-        user.setNumber(t.getNumber());
+        user.setUsername(t.getUsername());
         user.setPassword(t.getPassword());
         user.setName(t.getName());
         user.setMailbox(t.getMailbox());
@@ -77,14 +77,14 @@ public class UserManageServiceImpl implements UserManageService {
         user.setId(id);
         user.setIsdel(false);
         TUser t = tUserMapper.selectByPrimaryKey(id);
-        Long number = t.getNumber();
+        String username = t.getUsername();
         /**
          * 判断预约表，只要有相关会议就不能删
          */
         TConferenceRoomAppointmentExample example =new TConferenceRoomAppointmentExample();
         TConferenceRoomAppointmentExample.Criteria criteria= example.createCriteria();
         criteria.andIsdelEqualTo(true);
-        criteria.andNumberEqualTo(number);
+        criteria.andUsernameEqualTo(username);
         criteria.andExamineStatusNotEqualTo(3);
         List<TConferenceRoomAppointment> list=tConferenceRoomAppointmentMapper.selectByExample(example);
         if(list.size() !=0){

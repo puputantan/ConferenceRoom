@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.hbu.entity.TAdmin" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uuid" property="uuid" jdbcType="VARCHAR" />
-    <result column="number" property="number" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, uuid, number, name, password, phone, mailbox, department, creat_time, update_time, 
+    id, uuid, username, name, password, phone, mailbox, department, creat_time, update_time, 
     isdel
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hbu.entity.TAdminExample" >
@@ -107,11 +107,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.hbu.entity.TAdmin" >
-    insert into t_admin (id, uuid, number, 
+    insert into t_admin (id, uuid, username, 
       name, password, phone, 
       mailbox, department, creat_time, 
       update_time, isdel)
-    values (#{id,jdbcType=INTEGER}, #{uuid,jdbcType=VARCHAR}, #{number,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=INTEGER}, #{uuid,jdbcType=VARCHAR}, #{username,jdbcType=BIGINT}, 
       #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{mailbox,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{isdel,jdbcType=BIT})
@@ -125,8 +125,8 @@
       <if test="uuid != null" >
         uuid,
       </if>
-      <if test="number != null" >
-        number,
+      <if test="username != null" >
+        username,
       </if>
       <if test="name != null" >
         name,
@@ -160,8 +160,8 @@
       <if test="uuid != null" >
         #{uuid,jdbcType=VARCHAR},
       </if>
-      <if test="number != null" >
-        #{number,jdbcType=BIGINT},
+      <if test="username != null" >
+        #{username,jdbcType=BIGINT},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -204,8 +204,8 @@
       <if test="record.uuid != null" >
         uuid = #{record.uuid,jdbcType=VARCHAR},
       </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=BIGINT},
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=BIGINT},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -240,7 +240,7 @@
     update t_admin
     set id = #{record.id,jdbcType=INTEGER},
       uuid = #{record.uuid,jdbcType=VARCHAR},
-      number = #{record.number,jdbcType=BIGINT},
+      username = #{record.username,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
@@ -259,8 +259,8 @@
       <if test="uuid != null" >
         uuid = #{uuid,jdbcType=VARCHAR},
       </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=BIGINT},
+      <if test="username != null" >
+        username = #{username,jdbcType=BIGINT},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -292,7 +292,7 @@
   <update id="updateByPrimaryKey" parameterType="com.hbu.entity.TAdmin" >
     update t_admin
     set uuid = #{uuid,jdbcType=VARCHAR},
-      number = #{number,jdbcType=BIGINT},
+      username = #{username,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
@@ -304,12 +304,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- lst-->
-  <select id="selectByNumber" parameterType="java.lang.Long" resultType="java.lang.String" >
-  select password from t_admin where number =  #{number,jdbcType=BIGINT} and isdel =1
+  <select id="selectByUsername" parameterType="java.lang.String" resultType="java.lang.String" >
+  select password from t_admin where username =  #{username,jdbcType=BIGINT} and isdel =1
 </select>
 
   <!-- lst-->
-  <select id="selectMailByNumber" parameterType="java.lang.Long" resultType="java.lang.String" >
-  select mailbox from t_admin where number =  #{number,jdbcType=BIGINT}  and isdel =1
+  <select id="selectMailByUsername" parameterType="java.lang.String" resultType="java.lang.String" >
+  select mailbox from t_admin where username =  #{username,jdbcType=BIGINT}  and isdel =1
 </select>
 </mapper>

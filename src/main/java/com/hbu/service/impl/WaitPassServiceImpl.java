@@ -43,8 +43,8 @@ public class WaitPassServiceImpl implements WaitPassService {
             for(int i=0;i<list.size();i++){
                 WaitPassModel model=new WaitPassModel();
                 model.setAppointmentId(list.get(i).getId());
+                model.setName(list.get(i).getName());
                 model.setUsername(list.get(i).getUsername());
-                model.setNumber(list.get(i).getNumber());
                 model.setDate(list.get(i).getDate());
                 /**
                  * 2.setDepartment：需要根据number去t_user里查
@@ -54,8 +54,8 @@ public class WaitPassServiceImpl implements WaitPassService {
                  *   目前写的是全部都不显示，应该是出问题的不显示，而正常的依旧显示
                  */
                 try{
-                    long number=list.get(i).getNumber();
-                    model.setDepartment(tUserMapper.selectDepartment(number));
+                    String username=list.get(i).getUsername();
+                    model.setDepartment(tUserMapper.selectDepartment(username));
                     long roomId = list.get(i).getConferenceRoomId();
                     TConferenceRoom room = tConferenceRoomMapper.selectByPrimaryKey(roomId);
                     //  System.out.println("11111111111111111111111111111111111111111111111111111111111111111111");
@@ -100,16 +100,16 @@ public class WaitPassServiceImpl implements WaitPassService {
          for(int i=0;i<list.size();i++){
              WaitPassModel model=new WaitPassModel();
              model.setAppointmentId(list.get(i).getId());
+             model.setName(list.get(i).getName());
              model.setUsername(list.get(i).getUsername());
-             model.setNumber(list.get(i).getNumber());
              model.setDate(list.get(i).getDate());
              /**
               * setDepartment：需要根据number去user里查
  		             * 根据conference_room_id:setRoomName\setRoomType需要去会议表等里查
  		             * 共涉及四个表
               */
-             long number=list.get(i).getNumber();
-             model.setDepartment(tUserMapper.selectDepartment(number));
+             String username=list.get(i).getUsername();
+             model.setDepartment(tUserMapper.selectDepartment(username));
              long roomId = list.get(i).getConferenceRoomId();
              TConferenceRoom room = tConferenceRoomMapper.selectByPrimaryKey(roomId);      
              //room.getName()这可能有问题，比如会议室表的id不存在，后台会说空指针            
@@ -173,8 +173,8 @@ public class WaitPassServiceImpl implements WaitPassService {
                 re.setTime(time);
                 re.setIsdel(true);
                 refConferenceMapper.insert(re);
-                long number = t1.getNumber();
-                TUser user = tUserMapper.selectAllByNumber(number);
+                String username = t1.getUsername();
+                TUser user = tUserMapper.selectAllByUsername(username);
                 String pass ="恭喜您预约的日期为"+t1.getDate()+" ,时间为 "+time+"的会议预约成功了，祝您会议顺利。";
                 String receiver = user.getMailbox();
                 String messagecontent  = pass;
@@ -187,8 +187,8 @@ public class WaitPassServiceImpl implements WaitPassService {
                 String time=starttime+"--"+endtime;
                 String reason ="该时间段已经被预约,请重新预约";
                 tConferenceRoomAppointmentMapper.nopass1(appointmentId,reason);
-                long number = t1.getNumber();
-                TUser user = tUserMapper.selectAllByNumber(number);
+                String username = t1.getUsername();
+                TUser user = tUserMapper.selectAllByUsername(username);
                 String receiver = user.getMailbox();
                 String nopass = "对不起，您预约的日期为"+t1.getDate()+"  , 时间为"+time+"的会议，预约失败了。不通过理由是： ";
                 String messagecontent  = nopass + reason;
@@ -209,8 +209,8 @@ public class WaitPassServiceImpl implements WaitPassService {
             re.setTime(time);
             re.setIsdel(true);
             refConferenceMapper.insert(re);
-            long number = t1.getNumber();
-            TUser user = tUserMapper.selectAllByNumber(number);
+            String username = t1.getUsername();
+            TUser user = tUserMapper.selectAllByUsername(username);
             String pass ="恭喜您预约的日期为"+t1.getDate()+" ,时间为 "+time+"的会议预约成功了，祝您会议顺利。";
             String receiver = user.getMailbox();
             String messagecontent  = pass;
@@ -228,8 +228,8 @@ public class WaitPassServiceImpl implements WaitPassService {
          * 预约表通过id查找number，然后找邮箱
          */
         TConferenceRoomAppointment tConferenceRoomAppointment = tConferenceRoomAppointmentMapper.selectByPrimaryKey(id);
-        long number = tConferenceRoomAppointment.getNumber();
-        TUser user = tUserMapper.selectAllByNumber(number);
+        String username = tConferenceRoomAppointment.getUsername();
+        TUser user = tUserMapper.selectAllByUsername(username);
         String starttime=dicTimeMapper.selectByCode(tConferenceRoomAppointment.getStarttimeCode());
         String endtime=dicTimeMapper.selectByCode(tConferenceRoomAppointment.getEndtimeCode());
         String time=starttime+"--"+endtime;
@@ -267,12 +267,12 @@ public class WaitPassServiceImpl implements WaitPassService {
             for(int i=0;i<list.size();i++){
                 WaitPassModel model=new WaitPassModel();
                 model.setAppointmentId(list.get(i).getId());
+                model.setName(list.get(i).getName());
                 model.setUsername(list.get(i).getUsername());
-                model.setNumber(list.get(i).getNumber());
                 model.setDate(list.get(i).getDate());
                 try{
-                    long number=list.get(i).getNumber();
-                    model.setDepartment(tUserMapper.selectDepartment(number));
+                    String username=list.get(i).getUsername();
+                    model.setDepartment(tUserMapper.selectDepartment(username));
                     long roomId = list.get(i).getConferenceRoomId();
                     TConferenceRoom room = tConferenceRoomMapper.selectByPrimaryKey(roomId);
                     //  System.out.println("11111111111111111111111111111111111111111111111111111111111111111111");
