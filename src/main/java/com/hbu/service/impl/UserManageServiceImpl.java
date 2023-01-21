@@ -2,10 +2,7 @@ package com.hbu.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hbu.dao.TConferenceRoomAppointmentMapper;
 import com.hbu.dao.TUserMapper;
-import com.hbu.entity.TConferenceRoomAppointment;
-import com.hbu.entity.TConferenceRoomAppointmentExample;
 import com.hbu.entity.TUser;
 import com.hbu.entity.TUserExample;
 import com.hbu.service.UserManageService;
@@ -18,8 +15,6 @@ import java.util.List;
 public class UserManageServiceImpl implements UserManageService {
     @Autowired
     private TUserMapper tUserMapper;
-    @Autowired
-    private TConferenceRoomAppointmentMapper tConferenceRoomAppointmentMapper;
 
     @Override
     public PageInfo<TUser> show(int page){
@@ -45,7 +40,7 @@ public class UserManageServiceImpl implements UserManageService {
         user.setIsdel(true);
         user.setStatus((short)1);
         int num = tUserMapper.insert(user);
-        //不成功返回0
+        //Unsuccessful return 0
         if(num == 0) {
             return 0;
         }else {
@@ -64,37 +59,13 @@ public class UserManageServiceImpl implements UserManageService {
         user.setPhone(t.getPhone());
         user.setDepartment(t.getDepartment());
         int num = tUserMapper.updateByPrimaryKeySelective(user);
-        //不成功返回0
+        //Unsuccessful return 0
         if(num == 0) {
             return 0;
         }else {
             return num;
         }
     }
-    @Override
-    public int del(int id){
-        TUser user = new TUser();
-        user.setId(id);
-        user.setIsdel(false);
-        TUser t = tUserMapper.selectByPrimaryKey(id);
-        String username = t.getUsername();
-        /**
-         * 判断预约表，只要有相关会议就不能删
-         */
-        TConferenceRoomAppointmentExample example =new TConferenceRoomAppointmentExample();
-        TConferenceRoomAppointmentExample.Criteria criteria= example.createCriteria();
-        criteria.andIsdelEqualTo(true);
-        criteria.andUsernameEqualTo(username);
-        criteria.andExamineStatusNotEqualTo(3);
-        List<TConferenceRoomAppointment> list=tConferenceRoomAppointmentMapper.selectByExample(example);
-        if(list.size() !=0){
-            return 1;
-        }else{
-            tUserMapper.updateByPrimaryKeySelective(user);
-            return 0;
-        }
-    }
-
     @Override
     public List<TUser> newuser(){
         TUserExample example =new TUserExample();

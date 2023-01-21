@@ -2,13 +2,13 @@ package com.hbu.models;
 
 /**
  * 
- * @author 杨建兴
- *2020-03-24
+ * @author caipuyu
+ *2023-01-19
  */
 /**
- * 用户登录
-userNumber		类型：字符串 学号
-userPassword	类型：字符串 密码
+ * User login
+userNumber		Type: string student number
+userPassword	Type: string password
 
  *
  */

@@ -9,111 +9,88 @@ import redis.clients.jedis.Jedis;
  import redis.clients.jedis.JedisPool;
  import redis.clients.jedis.JedisPoolConfig;
 /**
-  * Redis工具类
-  * 调用格式：RedisUtil.getRu().方法
+ * Redis tool class
+ * Call format: RedisUtil.getRu().method
   */
  public class RedisUtil {  
-	 private static RedisUtil ru = new RedisUtil();  
-     private static Logger logger = Logger.getLogger(RedisUtil.class);
-//     private static JedisPool pool = null;  
-//     private static RedisUtil ru = new RedisUtil();  
-//     private static String AUTH="926459";
-//     private static Integer TIMEOUT = 10000;
-//     public RedisUtil() {  
-//         if (pool == null) { 
-//             //redis服务器IP
-//             String ip = "212.64.56.9" ;
-//             //redis服务器端口
-//             int port = 6379;
-//             
-//             JedisPoolConfig config = new JedisPoolConfig();  
-//             // 控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；  
-//             // 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。  
-//             config.setMaxTotal(10000);  
-//             // 控制一个pool最多有多少个状态为idle(空闲的)的jedis实例。  
-//             config.setMaxIdle(2000);  
-//             // 表示当borrow(引入)一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException；  
-//             config.setMaxWaitMillis(1000 * 100);  
-//             //config.setTestOnBorrow(true);  
-//             pool = new JedisPool(config,ip,port,TIMEOUT,AUTH);
-//         }  
-//     }  
-// 
-	//Redis服务器IP
-	    private static String ADDR = "127.0.0.1";
-	    //Redis的端口号
-	    private static Integer PORT = 6379;
-	    //访问密码  有就写，无就空
-	    private static String AUTH="123456";
+    private static RedisUtil ru = new RedisUtil();
+    private static Logger logger = Logger.getLogger(RedisUtil.class);
 
-	    //可用连接实例的最大数目，默认为8；
-	    //如果赋值为-1，则表示不限制，如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
-	    private static Integer MAX_TOTAL = 1024;
-	    //控制一个pool最多有多少个状态为idle(空闲)的jedis实例，默认值是8
-	    private static Integer MAX_IDLE = 200;
-	    //等待可用连接的最大时间，单位是毫秒，默认值为-1，表示永不超时。
-	    //如果超过等待时间，则直接抛出JedisConnectionException
-	    private static Integer MAX_WAIT_MILLIS = 10000;
-	    private static Integer TIMEOUT = 10000;
-	    //在borrow(用)一个jedis实例时，是否提前进行validate(验证)操作；
-	    //如果为true，则得到的jedis实例均是可用的
-	    private static Boolean TEST_ON_BORROW = true;
-	    private  static JedisPool pool = null;
+    //Redis server IP
+    private static String ADDR = "127.0.0.1";
+    //Redis port number
+    private static Integer PORT = 6379;
+    //Access password Write if you have it, leave it blank if you don’t have it
+    private static String AUTH="123456";
 
-	    /**
-	     * 静态块，初始化Redis连接池
-	     */
-	    static {
-	        try {
-	            JedisPoolConfig config = new JedisPoolConfig();
-	        /*注意：
-	            在高版本的jedis jar包，比如本版本2.9.0，JedisPoolConfig没有setMaxActive和setMaxWait属性了
-	            这是因为高版本中官方废弃了此方法，用以下两个属性替换。
-	            maxActive  ==>  maxTotal
-	            maxWait==>  maxWaitMillis
-	         */
-	            config.setMaxTotal(MAX_TOTAL);
-	            config.setMaxIdle(MAX_IDLE);
-	            config.setMaxWaitMillis(MAX_WAIT_MILLIS);
-	            config.setTestOnBorrow(TEST_ON_BORROW);
-	            pool = new JedisPool(config,ADDR,PORT,TIMEOUT,AUTH);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+    //The maximum number of available connection instances, the default is 8;
+    //If the assignment value is -1, it means no limit. If the pool has allocated maxActive jedis instances, the state of the pool is exhausted (exhausted)
+    private static Integer MAX_TOTAL = 1024;
+    //Control how many idle jedis instances a pool has at most, the default value is 8
+    private static Integer MAX_IDLE = 200;
+    //The maximum time to wait for an available connection, in milliseconds, the default value is -1, which means never timeout.
+    //If the waiting time is exceeded, JedisConnectionException is thrown directly
+    private static Integer MAX_WAIT_MILLIS = 10000;
+    private static Integer TIMEOUT = 10000;
+    //When borrowing (using) a jedis instance, whether to perform the validate (verify) operation in advance;
+    //If true, all jedis instances obtained are available
+    private static Boolean TEST_ON_BORROW = true;
+    private  static JedisPool pool = null;
 
-	    }
+    /**
+     * Static block, initialize Redis connection pool
+     */
+    static {
+        try {
+            JedisPoolConfig config = new JedisPoolConfig();
+        /*Notice：
+            In the higher version of the jedis jar package, such as this version 2.9.0, JedisPoolConfig has no setMaxActive and setMaxWait attributes
+             This is because this method is officially deprecated in higher versions and replaced with the following two attributes.
+             maxActive ==> maxTotal
+             maxWait ==> maxWaitMillis
+         */
+            config.setMaxTotal(MAX_TOTAL);
+            config.setMaxIdle(MAX_IDLE);
+            config.setMaxWaitMillis(MAX_WAIT_MILLIS);
+            config.setTestOnBorrow(TEST_ON_BORROW);
+            pool = new JedisPool(config,ADDR,PORT,TIMEOUT,AUTH);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	    /**
-	     * 获取Jedis实例
-	     * @return
-	     */
-	    public synchronized static Jedis getJedis(){
-	        try {
-	            if(pool != null){
-	                Jedis jedis = pool.getResource();
-	                return jedis;
-	            }else{
-	                return null;
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            return null;
-	        }
-	    }
+    }
 
-	    public static void returnResource(final Jedis jedis){
-	        //方法参数被声明为final，表示它是只读的。
-	        if(jedis!=null){
-	        	pool.returnResource(jedis);
-	            //jedis.close()取代jedisPool.returnResource(jedis)方法将3.0版本开始
-	            //jedis.close();
-	        }
-	    }
-     /** 
-      * <p>通过key获取储存在redis中的value</p> 
-      * <p>并释放连接</p> 
-      * @param key 
-      * @return 成功返回value 失败返回null 
+    /**
+     * Get a Jedis instance
+     * @return
+     */
+    public synchronized static Jedis getJedis(){
+        try {
+            if(pool != null){
+                Jedis jedis = pool.getResource();
+                return jedis;
+            }else{
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void returnResource(final Jedis jedis){
+        // The method parameter is declared final, meaning it is read-only.
+        if(jedis!=null){
+            pool. returnResource(jedis);
+            //jedis.close() replaces jedisPool.returnResource(jedis) method to start with version 3.0
+            //jedis.close();
+        }
+    }
+     /**
+      * <p>Get the value stored in redis by key</p>
+      * <p>And release the connection</p>
+      * @param key
+      * @return return value successfully, return null if failed
       */  
      public static String get(String key){  
          Jedis jedis = null;  
@@ -130,12 +107,12 @@ import redis.clients.jedis.Jedis;
          return value;  
      }  
  
-     /** 
-      * <p>向redis存入key和value,并释放连接资源</p> 
-      * <p>如果key已经存在 则覆盖</p> 
-      * @param key 
-      * @param value 
-      * @return 成功 返回OK 失败返回 0 
+     /**
+      * <p>Save key and value to redis, and release connection resources</p>
+      * <p>Overwrite if the key already exists</p>
+      * @param key
+      * @param value
+      * @return success returns OK, failure returns 0
       */  
      public static String set(String key,String value){  
          Jedis jedis = null;  
@@ -152,10 +129,10 @@ import redis.clients.jedis.Jedis;
      }  
  
  
-     /** 
-      * <p>删除指定的key,也可以传入一个包含key的数组</p> 
-      * @param keys 一个key  也可以使 string 数组 
-      * @return 返回删除成功的个数 
+     /**
+      * <p>Delete the specified key, you can also pass in an array containing the key</p>
+      * @param keys A key can also be a string array
+      * @return Return the number of successfully deleted
       */  
      public Long del(String keys){  
          Jedis jedis = null;  
@@ -171,11 +148,11 @@ import redis.clients.jedis.Jedis;
          }  
      }  
  
-     /** 
-      * <p>通过key向指定的value值追加值</p> 
-      * @param key 
-      * @param str 
-      * @return 成功返回 添加后value的长度 失败 返回 添加的 value 的长度  异常返回0L 
+     /**
+      * <p>Append value to the specified value by key</p>
+      * @param key
+      * @param str
+      * @return successfully returns the length of the added value, fails to return the length of the added value, and returns 0L on exception
       */  
      public static Long append(String key ,String str){  
          Jedis jedis = null;  
@@ -193,8 +170,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>判断key是否存在</p> 
+     /**
+      * <p>Determine whether the key exists</p>
       * @param key 
       * @return true OR false 
       */  
@@ -212,11 +189,11 @@ import redis.clients.jedis.Jedis;
          }  
      }  
  
-     /** 
-      * <p>设置key value,如果key已经存在则返回0,nx==> not exist</p> 
-      * @param key 
-      * @param value 
-      * @return 成功返回1 如果存在 和 发生异常 返回 0 
+     /**
+      * <p>Set the key value, if the key already exists, return 0, nx==> not exist</p>
+      * @param key
+      * @param value
+      * @return returns 1 on success and 0 if an exception occurs
       */  
      public Long setnx(String key ,String value){  
          Jedis jedis = null;  
@@ -230,15 +207,15 @@ import redis.clients.jedis.Jedis;
          } finally {  
              returnResource(pool, jedis);  
          }  
-     }  
- 
-     /** 
-      * <p>设置key value并制定这个键值的有效期</p> 
-      * @param key 
-      * @param value 
-      * @param seconds 单位:秒 
-      * @return 成功返回OK 失败和异常返回null 
-      */  
+     }
+
+     /**
+      * <p>Set the key value and specify the validity period of this key value</p>
+      * @param key
+      * @param value
+      * @param seconds unit: seconds
+      * @return returns OK on success, null on failure and exception
+      */
      public String setex(String key,String value,int seconds){  
          Jedis jedis = null;  
          String res = null;  
@@ -255,19 +232,19 @@ import redis.clients.jedis.Jedis;
      }  
  
  
-     /** 
-      * <p>通过key 和offset 从指定的位置开始将原先value替换</p> 
-      * <p>下标从0开始,offset表示从offset下标开始替换</p> 
-      * <p>如果替换的字符串长度过小则会这样</p> 
-      * <p>example:</p> 
-      * <p>value : rscoa@richinfo.cn</p> 
-      * <p>str : abc </p> 
-      * <P>从下标7开始替换  则结果为</p> 
-      * <p>RES : rscoa.cn</p> 
-      * @param key 
-      * @param str 
-      * @param offset 下标位置 
-      * @return 返回替换后  value 的长度 
+     /**
+      * <p>Replace the original value from the specified position by key and offset</p>
+      * <p>The subscript starts from 0, and offset means to replace from the offset subscript</p>
+      * <p>This will happen if the length of the replaced string is too small</p>
+      * <p>example:</p>
+      * <p>value : rscoa@richinfo.cn</p>
+      * <p>str : abc</p>
+      * <P>Replace from subscript 7, the result is</p>
+      * <p>RES : rscoa.cn</p>
+      * @param key
+      * @param str
+      * @param offset subscript position
+      * @return returns the length of value after replacement
       */  
      public Long setrange(String key,String str,int offset){  
          Jedis jedis = null;  
@@ -285,10 +262,10 @@ import redis.clients.jedis.Jedis;
  
  
  
-     /** 
-      * <p>通过批量的key获取批量的value</p> 
-      * @param keys string数组 也可以是一个key 
-      * @return 成功返回value的集合, 失败返回null的集合 ,异常返回空 
+     /**
+      * <p>Get batch value by batch key</p>
+      * @param keys string array can also be a key
+      * @return successfully returns the set of value, fails to return the set of null, and returns empty on exception
       */  
      public static List<String> mget(String...keys){  
          Jedis jedis = null;  
@@ -305,12 +282,12 @@ import redis.clients.jedis.Jedis;
          return values;  
      }  
  
-     /** 
-      * <p>批量的设置key:value,可以一个</p> 
-      * <p>example:</p> 
-      * <p>  obj.mset(new String[]{"key2","value1","key2","value2"})</p> 
-      * @param keysvalues 
-      * @return 成功返回OK 失败 异常 返回 null 
+     /**
+      * <p>Set key:value in batches, one can be used</p>
+      * <p>example:</p>
+      * <p> obj.mset(new String[]{"key2","value1","key2","value2"})</p>
+      * @param keysvalues
+      * @return returns OK on success, and returns null on failure
       * 
       */  
      public static String mset(String...keysvalues){  
@@ -328,12 +305,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>批量的设置key:value,可以一个,如果key已经存在则会失败,操作会回滚</p> 
-      * <p>example:</p> 
-      * <p>  obj.msetnx(new String[]{"key2","value1","key2","value2"})</p> 
-      * @param keysvalues 
-      * @return 成功返回1 失败返回0 
+     /**
+      * <p>Set key:value in batches, one can be used, if the key already exists, it will fail and the operation will be rolled back</p>
+      * <p>example:</p>
+      * <p>obj.msetnx(new String[]{"key2","value1","key2","value2"})</p>
+      * @param keysvalues
+      * @return returns 1 on success, 0 on failure
       */  
      public static Long msetnx(String...keysvalues){  
          Jedis jedis = null;  
@@ -350,11 +327,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>设置key的值,并返回一个旧值</p> 
-      * @param key 
-      * @param value 
-      * @return 旧值 如果key不存在 则返回null 
+     /**
+      * <p>Set the value of key and return an old value</p>
+      * @param key
+      * @param value
+      * @return the old value, if the key does not exist, return null
       */  
      public String getset(String key,String value){  
          Jedis jedis = null;  
@@ -371,12 +348,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过下标 和key 获取指定下标位置的 value</p> 
-      * @param key 
-      * @param startOffset 开始位置 从0 开始 负数表示从右边开始截取 
-      * @param endOffset 
-      * @return 如果没有返回null 
+     /**
+      * <p>Get the value at the specified subscript position through the subscript and key</p>
+      * @param key
+      * @param startOffset start position starts from 0, negative number means intercept from the right
+      * @param endOffset
+      * @return null if not returned
       */  
      public String getrange(String key, int startOffset ,int endOffset){  
          Jedis jedis = null;  
@@ -393,10 +370,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key 对value进行加值+1操作,当value不是int类型时会返回错误,当key不存在是则value为1</p> 
-      * @param key 
-      * @return 加值后的结果 
+     /**
+      * <p>Add +1 to the value through the key. When the value is not an int type, an error will be returned. When the key does not exist, the value will be 1</p>
+      * @param key
+      * @return the value-added result
       */  
      public Long incr(String key){  
          Jedis jedis = null;  
@@ -413,11 +390,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key给指定的value加值,如果key不存在,则这是value为该值</p> 
-      * @param key 
-      * @param integer 
-      * @return 
+     /**
+      * <p>Add a value to the specified value through the key, if the key does not exist, then this is the value</p>
+      * @param key
+      * @param integer
+      * @return
       */  
      public Long incrBy(String key,Long integer){  
          Jedis jedis = null;  
@@ -434,10 +411,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>对key的值做减减操作,如果key不存在,则设置key为-1</p> 
-      * @param key 
-      * @return 
+     /**
+      * <p>Reduce the value of the key, if the key does not exist, set the key to -1</p>
+      * @param key
+      * @return
       */  
      public Long decr(String key) {  
          Jedis jedis = null;  
@@ -454,11 +431,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>减去指定的值</p> 
-      * @param key 
-      * @param integer 
-      * @return 
+     /**
+      * <p>Subtract the specified value</p>
+      * @param key
+      * @param integer
+      * @return
       */  
      public Long decrBy(String key,Long integer){  
          Jedis jedis = null;  
@@ -475,10 +452,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取value值的长度</p> 
-      * @param key 
-      * @return 失败返回null 
+     /**
+      * <p>Get the length of value by key</p>
+      * @param key
+      * @return null on failure
       */  
      public Long serlen(String key){  
          Jedis jedis = null;  
@@ -495,12 +472,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key给field设置指定的值,如果key不存在,则先创建</p> 
-      * @param key 
-      * @param field 字段 
-      * @param value 
-      * @return 如果存在返回0 异常返回null 
+     /**
+      * <p>Set the specified value to the field through the key, if the key does not exist, create it first</p>
+      * @param key
+      * @param field field
+      * @param value
+      * @return returns 0 if there is an exception and returns null
       */  
      public Long hset(String key,String field,String value) {  
          Jedis jedis = null;  
@@ -517,12 +494,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key给field设置指定的值,如果key不存在则先创建,如果field已经存在,返回0</p> 
-      * @param key 
-      * @param field 
-      * @param value 
-      * @return 
+     /**
+      * <p>Set the specified value to the field through the key, if the key does not exist, create it first, if the field already exists, return 0</p>
+      * @param key
+      * @param field
+      * @param value
+      * @return
       */  
      public Long hsetnx(String key,String field,String value){  
          Jedis jedis = null;  
@@ -539,11 +516,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key同时设置 hash的多个field</p> 
-      * @param key 
-      * @param hash 
-      * @return 返回OK 异常返回null 
+     /**
+      * <p>Set multiple hash fields at the same time by key</p>
+      * @param key
+      * @param hash
+      * @return return OK return null
       */  
      public String hmset(String key,Map<String, String> hash){  
          Jedis jedis = null;  
@@ -560,11 +537,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key 和 field 获取指定的 value</p> 
-      * @param key 
-      * @param field 
-      * @return 没有返回null 
+     /**
+      * <p>Get the specified value by key and field</p>
+      * @param key
+      * @param field
+      * @return does not return null
       */  
      public String hget(String key, String field){  
          Jedis jedis = null;  
@@ -581,10 +558,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key 和 fields 获取指定的value 如果没有对应的value则返回null</p> 
-      * @param key 
-      * @param fields 可以使 一个String 也可以是 String数组 
+     /**
+      * <p>Get the specified value through key and fields, if there is no corresponding value, return null</p>
+      * @param key
+      * @param fields can be a String or a String array
       * @return 
       */  
      public List<String> hmget(String key,String...fields){  
@@ -602,8 +579,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key给指定的field的value加上给定的值</p> 
+     /**
+      * <p>Add the given value to the value of the specified field by key</p>
       * @param key 
       * @param field 
       * @param value 
@@ -624,8 +601,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key和field判断是否有指定的value存在</p> 
+     /**
+      * <p>Judging whether there is a specified value by key and field</p>
       * @param key 
       * @param field 
       * @return 
@@ -645,10 +622,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回field的数量</p> 
-      * @param key 
-      * @return 
+     /**
+      * <p>Return the number of fields by key</p>
+      * @param key
+      * @return
       */  
      public Long hlen(String key){  
          Jedis jedis = null;  
@@ -666,11 +643,11 @@ import redis.clients.jedis.Jedis;
  
      }  
  
-     /** 
-      * <p>通过key 删除指定的 field </p> 
-      * @param key 
-      * @param fields 可以是 一个 field 也可以是 一个数组 
-      * @return 
+     /**
+      * <p>Delete the specified field by key</p>
+      * @param key
+      * @param fields can be a field or an array
+      * @return
       */  
      public Long hdel(String key ,String...fields){  
          Jedis jedis = null;  
@@ -687,10 +664,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回所有的field</p> 
-      * @param key 
-      * @return 
+     /**
+      * <p>Return all fields by key</p>
+      * @param key
+      * @return
       */  
      public Set<String> hkeys(String key){  
          Jedis jedis = null;  
@@ -707,10 +684,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回所有和key有关的value</p> 
-      * @param key 
-      * @return 
+     /**
+      * <p>Return all values related to key by key</p>
+      * @param key
+      * @return
       */  
      public List<String> hvals(String key){  
          Jedis jedis = null;  
@@ -727,10 +704,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取所有的field和value</p> 
-      * @param key 
-      * @return 
+     /**
+      * <p>Get all fields and values by key</p>
+      * @param key
+      * @return
       */  
      public Map<String, String> hgetall(String key){  
          Jedis jedis = null;  
@@ -746,11 +723,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key向list头部添加字符串</p> 
-      * @param key 
-      * @param strs 可以使一个string 也可以使string数组 
-      * @return 返回list的value个数 
+     /**
+      * <p>Add a string to the head of the list by key</p>
+      * @param key
+      * @param strs can be a string or an array of strings
+      * @return Return the number of values in the list
       */  
      public Long lpush(String key ,String...strs){  
          Jedis jedis = null;  
@@ -767,11 +744,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key向list尾部添加字符串</p> 
-      * @param key 
-      * @param strs 可以使一个string 也可以使string数组 
-      * @return 返回list的value个数 
+     /**
+      * <p>Add a string to the end of the list by key</p>
+      * @param key
+      * @param strs can be a string or an array of strings
+      * @return Return the number of values in the list
       */  
      public Long rpush(String key ,String...strs){  
          Jedis jedis = null;  
@@ -788,12 +765,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key在list指定的位置之前或者之后 添加字符串元素</p> 
-      * @param key 
-      * @param where LIST_POSITION枚举类型 
-      * @param pivot list里面的value 
-      * @param value 添加的value 
+     /**
+      * <p>Add a string element before or after the position specified by the list by key</p>
+      * @param key
+      * @param where LIST_POSITION enumeration type
+      * @param pivot list value
+      * @param value added value
       * @return 
       */  
      public Long linsert(String key, LIST_POSITION where,  
@@ -812,13 +789,13 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key设置list指定下标位置的value</p> 
-      * <p>如果下标超过list里面value的个数则报错</p> 
-      * @param key 
-      * @param index 从0开始 
-      * @param value 
-      * @return 成功返回OK 
+     /**
+      * <p>Set the list to specify the value of the subscript position through the key</p>
+      * <p>If the subscript exceeds the number of values in the list, an error will be reported</p>
+      * @param key
+      * @param index starts from 0
+      * @param value
+      * @return successfully returns OK
       */  
      public String lset(String key ,Long index, String value){  
          Jedis jedis = null;  
@@ -835,12 +812,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key从对应的list中删除指定的count个 和 value相同的元素</p> 
-      * @param key 
-      * @param count 当count为0时删除全部 
-      * @param value 
-      * @return 返回被删除的个数 
+     /**
+      * <p>Delete the specified count elements with the same value from the corresponding list by key</p>
+      * @param key
+      * @param count delete all when count is 0
+      * @param value
+      * @return returns the number of deleted
       */  
      public Long lrem(String key,long count,String value){  
          Jedis jedis = null;  
@@ -857,12 +834,12 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key保留list中从strat下标开始到end下标结束的value值</p> 
-      * @param key 
-      * @param start 
-      * @param end 
-      * @return 成功返回OK 
+     /**
+      * <p>Reserve the value from the strat subscript to the end subscript in the list by key</p>
+      * @param key
+      * @param start
+      * @param end
+      * @return successfully returns OK
       */  
      public String ltrim(String key ,long start ,long end){  
          Jedis jedis = null;  
@@ -879,8 +856,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key从list的头部删除一个value,并返回该value</p> 
+     /**
+      * <p>Delete a value from the head of the list by key, and return the value</p>
       * @param key 
       * @return 
       */  
@@ -899,8 +876,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key从list尾部删除一个value,并返回该元素</p> 
+     /**
+      * <p>Delete a value from the end of the list by key, and return the element</p>
       * @param key 
       * @return 
       */  
@@ -919,9 +896,9 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key从一个list的尾部删除一个value并添加到另一个list的头部,并返回该value</p> 
-      * <p>如果第一个list为空或者不存在则返回null</p> 
+     /**
+      * <p>Delete a value from the end of a list by key and add it to the head of another list, and return the value</p>
+      * <p>If the first list is empty or does not exist, return null</p>
       * @param srckey 
       * @param dstkey 
       * @return 
@@ -941,11 +918,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取list中指定下标位置的value</p> 
-      * @param key 
-      * @param index 
-      * @return 如果没有返回null 
+     /**
+      * <p>Get the value of the specified subscript position in the list by key</p>
+      * @param key
+      * @param index
+      * @return null if not returned
       */  
      public String lindex(String key,long index){  
          Jedis jedis = null;  
@@ -962,8 +939,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回list的长度</p> 
+     /**
+      * <p>Return the length of the list by key</p>
       * @param key 
       * @return 
       */  
@@ -982,9 +959,9 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取list指定下标位置的value</p> 
-      * <p>如果start 为 0 end 为 -1 则返回全部的list中的value</p> 
+     /**
+      * <p>Get the value of the specified subscript position of the list through the key</p>
+      * <p>If start is 0 and end is -1, all values in the list will be returned</p>
       * @param key 
       * @param start 
       * @param end 
@@ -1005,11 +982,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key向指定的set中添加value</p> 
-      * @param key 
-      * @param members 可以是一个String 也可以是一个String数组 
-      * @return 添加成功的个数 
+     /**
+      * <p>Add value to the specified set by key</p>
+      * @param key
+      * @param members can be a String or a String array
+      * @return The number of successful additions
       */  
      public Long sadd(String key,String...members){  
          Jedis jedis = null;  
@@ -1026,11 +1003,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key删除set中对应的value值</p> 
-      * @param key 
-      * @param members 可以是一个String 也可以是一个String数组 
-      * @return 删除的个数 
+     /**
+      * <p>Delete the corresponding value in the set by key</p>
+      * @param key
+      * @param members can be a String or a String array
+      * @return the number of deletions
       */  
      public Long srem(String key,String...members){  
          Jedis jedis = null;  
@@ -1047,8 +1024,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key随机删除一个set中的value并返回该值</p> 
+     /**
+      * <p>Randomly delete a value in a set by key and return the value</p>
       * @param key 
       * @return 
       */  
@@ -1067,10 +1044,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取set中的差集</p> 
-      * <p>以第一个set为标准</p> 
-      * @param keys 可以使一个string 则返回set中所有的value 也可以是string数组 
+     /**
+      * <p>Get the difference in set by key</p>
+      * <p>Take the first set as the standard</p>
+      * @param keys can be a string and return all the values in the set, or it can be a string array
       * @return 
       */  
      public Set<String> sdiff(String...keys){  
@@ -1088,11 +1065,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取set中的差集并存入到另一个key中</p> 
-      * <p>以第一个set为标准</p> 
-      * @param dstkey 差集存入的key 
-      * @param keys 可以使一个string 则返回set中所有的value 也可以是string数组 
+     /**
+      * <p>Get the difference in the set through the key and store it in another key</p>
+      * <p>Take the first set as the standard</p>
+      * @param dstkey The key stored in the difference set
+      * @param keys can be a string and return all the values in the set, or it can be a string array
       * @return 
       */  
      public Long sdiffstore(String dstkey,String... keys){  
@@ -1110,9 +1087,9 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取指定set中的交集</p> 
-      * @param keys 可以使一个string 也可以是一个string数组 
+     /**
+      * <p>Get the intersection in the specified set by key</p>
+      * @param keys can be a string or an array of strings
       * @return 
       */  
      public Set<String> sinter(String...keys){  
@@ -1130,10 +1107,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取指定set中的交集 并将结果存入新的set中</p> 
-      * @param dstkey 
-      * @param keys 可以使一个string 也可以是一个string数组 
+     /**
+      * <p>Get the intersection in the specified set by key and store the result in a new set</p>
+      * @param dstkey
+      * @param keys can be a string or an array of strings
       * @return 
       */  
      public Long sinterstore(String dstkey,String...keys){  
@@ -1151,10 +1128,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回所有set的并集</p> 
-      * @param keys 可以使一个string 也可以是一个string数组 
-      * @return 
+     /**
+      * <p>Return the union of all sets by key</p>
+      * @param keys can be a string or an array of strings
+      * @return
       */  
      public Set<String> sunion(String... keys){  
          Jedis jedis = null;  
@@ -1171,10 +1148,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回所有set的并集,并存入到新的set中</p> 
-      * @param dstkey 
-      * @param keys 可以使一个string 也可以是一个string数组 
+     /**
+      * <p>Return the union of all sets by key and store them in the new set</p>
+      * @param dstkey
+      * @param keys can be a string or an array of strings
       * @return 
       */  
      public Long sunionstore(String dstkey,String...keys){  
@@ -1192,11 +1169,11 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key将set中的value移除并添加到第二个set中</p> 
-      * @param srckey 需要移除的 
-      * @param dstkey 添加的 
-      * @param member set中的value 
+     /**
+      * <p>Remove the value in the set by key and add it to the second set</p>
+      * @param srckey needs to be removed
+      * @param dstkey added
+      * @param value in member set
       * @return 
       */  
      public Long smove(String srckey, String dstkey, String member){  
@@ -1214,8 +1191,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取set中value的个数</p> 
+     /**
+      * <p>Get the number of values in the set by key</p>
       * @param key 
       * @return 
       */  
@@ -1234,8 +1211,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key判断value是否是set中的元素</p> 
+     /**
+      * <p>Determine whether the value is an element in the set by key</p>
       * @param key 
       * @param member 
       * @return 
@@ -1255,8 +1232,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取set中随机的value,不删除元素</p> 
+     /**
+      * <p>Get the random value in the set through the key, do not delete the element</p>
       * @param key 
       * @return 
       */  
@@ -1275,8 +1252,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key获取set中所有的value</p> 
+     /**
+      * <p>Get all the values in the set by key</p>
       * @param key 
       * @return 
       */  
@@ -1296,9 +1273,9 @@ import redis.clients.jedis.Jedis;
      }  
  
  
-     /** 
-      * <p>通过key向zset中添加value,score,其中score就是用来排序的</p> 
-      * <p>如果该value已经存在则根据score更新元素</p> 
+     /**
+      * <p>Add value and score to zset by key, where score is used for sorting</p>
+      * <p>If the value already exists, update the element according to the score</p>
       * @param key 
       * @param score 
       * @param member 
@@ -1319,10 +1296,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key删除在zset中指定的value</p> 
-      * @param key 
-      * @param members 可以使一个string 也可以是一个string数组 
+     /**
+      * <p>Delete the value specified in zset by key</p>
+      * @param key
+      * @param members can be a string or a string array
       * @return 
       */  
      public Long zrem(String key,String...members){  
@@ -1340,8 +1317,8 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key增加该zset中value的score的值</p> 
+     /**
+      * <p>Increase the score value of the value in the zset through the key</p>
       * @param key 
       * @param score 
       * @param member 
@@ -1362,9 +1339,9 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回zset中value的排名</p> 
-      * <p>下标从小到大排序</p> 
+     /**
+      * <p>Return the ranking of value in zset by key</p>
+      * <p>Sort subscripts from small to large</p>
       * @param key 
       * @param member 
       * @return 
@@ -1384,9 +1361,9 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key返回zset中value的排名</p> 
-      * <p>下标从大到小排序</p> 
+     /**
+      * <p>Return the ranking of value in zset by key</p>
+      * <p>Sort subscripts from largest to smallest</p>
       * @param key 
       * @param member 
       * @return 
@@ -1406,10 +1383,10 @@ import redis.clients.jedis.Jedis;
          return res;  
      }  
  
-     /** 
-      * <p>通过key将获取score从start到end中zset的value</p> 
-      * <p>socre从大到小排序</p> 
-      * <p>当start为0 end为-1时返回全部</p> 
+     /**
+      * <p>The value of zset in score from start to end will be obtained by key</p>
+      * <p>socre sorted from big to small</p>
+      * <p>Return all when start is 0 and end is -1</p>
       * @param key 
       * @param start 
       * @param end 
@@ -1431,7 +1408,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key返回指定score内zset中的value</p> 
+      * <p>Return the value in zset in the specified score by key</p>
       * @param key 
       * @param max 
       * @param min 
@@ -1453,7 +1430,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key返回指定score内zset中的value</p> 
+      * <p>Return the value in zset in the specified score by key</p>
       * @param key 
       * @param max 
       * @param min 
@@ -1475,7 +1452,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>返回指定区间内zset中value的数量</p> 
+      * <p>Returns the number of values in zset within the specified interval</p>
       * @param key 
       * @param min 
       * @param max 
@@ -1497,7 +1474,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key返回zset中的value个数</p> 
+      * <p>Return the number of values in zset by key</p>
       * @param key 
       * @return 
       */  
@@ -1517,7 +1494,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key获取zset中value的score值</p> 
+      * <p>Get the score value of value in zset by key</p>
       * @param key 
       * @param member 
       * @return 
@@ -1538,7 +1515,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key删除给定区间内的元素</p> 
+      * <p>Delete elements in a given interval by key</p>
       * @param key 
       * @param start 
       * @param end 
@@ -1560,7 +1537,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key删除指定score内的元素</p> 
+      * <p>Delete elements in the specified score by key</p>
       * @param key 
       * @param start 
       * @param end 
@@ -1580,13 +1557,13 @@ import redis.clients.jedis.Jedis;
          }  
          return res;  
      }  
-     /** 
-      * <p>返回满足pattern表达式的所有key</p> 
-      * <p>keys(*)</p> 
-      * <p>返回所有的key</p> 
-      * @param pattern 
-      * @return 
-      */  
+     /**
+      * <p>Return all keys that satisfy the pattern expression</p>
+      * <p>keys(*)</p>
+      * <p>Return all keys</p>
+      * @param pattern
+      * @return
+      */
      public Set<String> keys(String pattern){  
          Jedis jedis = null;  
          Set<String> res = null;  
@@ -1603,7 +1580,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * <p>通过key判断值得类型</p> 
+      * <p>Judging value type by key</p>
       * @param key 
       * @return 
       */  
@@ -1623,7 +1600,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /** 
-      * 返还到连接池 
+      * return to the connection pool
       * 
       * @param pool 
       * @param jedis 
@@ -1635,7 +1612,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /**
-      * 获取RedisUtil实例
+      * Get RedisUtil instance
       * @return
       */
      public static RedisUtil getRu() {  
@@ -1643,7 +1620,7 @@ import redis.clients.jedis.Jedis;
      }  
  
      /**
-      * new 一个RedisUtil 对象
+      * new A RedisUtil object
       * @param ru
       */
      public static void setRu(RedisUtil ru) {  

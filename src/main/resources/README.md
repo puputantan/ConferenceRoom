@@ -1,12 +1,8 @@
 # ConferenceRoom
 
-#### 文件夹描述：路径：ConferenceRoom\src\main\resources
-mapper文件夹：包含mybatis中使用的xml文件，代码中有sql语句，对数据库进行操作
-spring文件夹：包含三个文件，spring-dao、spring-service、spring-web，都是spring的配置文件
-mybatis-config.xml里面是mybatis的配置文件
-jdbc.properties:用于连接数据库
-
-
-####
-后台开发人员：刘思彤 1173080299@qq.com
+#### Folder description: Path: ConferenceRoom\src\main\resources
+mapper: contains the xml file used in mybatis, there are sql statements in the code, and the database is operated
+spring: Contains three files, spring-dao, spring-service, spring-web, all are spring configuration files
+mybatis-config.xml is the configuration file of mybatis
+jdbc.properties: used to connect to the database
 

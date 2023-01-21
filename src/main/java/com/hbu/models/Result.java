@@ -1,10 +1,10 @@
 package com.hbu.models;
 
-public class Result <T>{
+public class Result<T>{
 
-	private String code = "000000"; //FIXED ME 这里优化为枚举
+	private String code = "000000";
 	
-	private String message = "success"; //FIXED ME 这也需要优化为枚举类型
+	private String message = "success";
 	
 	private T data;
 
