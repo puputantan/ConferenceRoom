@@ -25,7 +25,7 @@ JUnit: unit test
 
 #### file description：url：ConferenceRoom
 src contains all the code of the project, including the front-end and database-related codes.
-The pom.xml file is the basic unit of work of a Maven project. It is an XML file that contains basic information about 
+The pom.xml file is the basic unit of work of a Maven project. It is an XML file that contains basic information about
 the project and is used to describe how the project is built, declare project dependencies, and so on.
 Others are attached files used in project configuration.
 conferenceroom.sql:database file

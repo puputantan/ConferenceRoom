@@ -5,34 +5,34 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd">
-	<!-- 配置整合mybatis过程 -->
-	<!-- 1.配置数据库相关参数properties的属性：${url} -->
+	<!-- Configuration integration mybatis process -->
+	<!-- 1. Configure the attributes of the database-related parameter properties: ${url} -->
 	<context:property-placeholder location="classpath:jdbc.properties" />
 
-	<!-- 2.数据库连接池 -->
+	<!-- 2. Database connection pool -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<!-- 配置连接池属性 -->
+		<!-- Configure connection pool properties -->
 		<property name="driverClass" value="${jdbc.driver}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 
-		<!-- c3p0连接池的私有属性 -->
+		<!-- Private property of c3p0 connection pool -->
 		<property name="maxPoolSize" value="30" />
 		<property name="minPoolSize" value="10" />
-		<!-- 关闭连接后不自动commit -->
+		<!-- Do not automatically commit after closing the connection -->
 		<property name="autoCommitOnClose" value="false" />
-		<!-- 获取连接超时时间 -->
+		<!-- Get connection timeout -->
 		<property name="checkoutTimeout" value="10000" />
-		<!-- 当获取连接失败重试次数 -->
+		<!-- The number of retries when the connection fails -->
 		<property name="acquireRetryAttempts" value="2" />
 	</bean>
 
-	<!-- 3.配置SqlSessionFactory对象 -->
+	<!-- 3. Configure the SqlSessionFactory object -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!-- 注入数据库连接池 -->
+		<!-- Inject database connection pool -->
 		<property name="dataSource" ref="dataSource" />
-		<!--配置PageHelper-->
+		<!--Configure PageHelper-->
 		<property name="plugins">
 			<array>
 				<bean class="com.github.pagehelper.PageInterceptor">
@@ -47,21 +47,21 @@
 				</bean>
 			</array>
 		</property>
-		<!-- 配置MyBaties全局配置文件:mybatis-config.xml
-		<property name="configLocation" value="classpath:mybatis-config.xml" /> 
-		
-		  扫描entity包 使用别名
+		<!-- Configure MyBaties global configuration file: mybatis-config.xml
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+
+		  Scan entity packages using aliases
 		<property name="typeAliasesPackage" value="com.hbu.entity" /> -->
-		
-		<!-- 扫描sql配置文件:mapper需要的xml文件 -->
+
+		<!-- Scan sql configuration file: xml file required by mapper -->
 		<property name="mapperLocations" value="classpath:mapper/*.xml" />
 	</bean>
 
-	<!-- 4.配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+	<!-- 4. Configure and scan the Dao interface package, dynamically implement the Dao interface, and inject it into the spring container -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!-- 注入sqlSessionFactory -->
+		<!-- Inject sqlSessionFactory -->
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-		<!-- 给出需要扫描Dao接口包 -->
+		<!-- Give the Dao interface package that needs to be scanned -->
 		<property name="basePackage" value="com.hbu.dao" />
 	</bean>
 </beans>

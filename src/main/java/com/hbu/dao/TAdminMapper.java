@@ -28,9 +28,9 @@ public interface TAdminMapper {
 
     int updateByPrimaryKey(TAdmin record);
 
-    //通过工号查出密码pw
+    //Find out the password pw through the job number
     String selectByUsername(@Param("username") String username);
 
-    //通过工号查出邮箱
+    //Find out the mailbox through the job number
     String selectMailByUsername(@Param("username") String username);
 }

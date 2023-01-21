@@ -6,17 +6,17 @@ import com.hbu.utils.RedisUtil;
 
 
 public class BaseController {
-	//获取未格式化的UUID
+	//Get the unformatted UUID
     public static String getId() {
         return UUID.randomUUID().toString();
     }
     /**
-     * 调用样例
+     * call example
      * Result< List<PayModel>  >  result = new Result< List<PayModel>  >();
 		
 		if(!checklogin(request)) {
 			result.setCode("999999");
-			result.setMessage("请登录");
+			result.setMessage("please sign in");
 			return result;
 		}
      * @param request
@@ -46,7 +46,7 @@ public class BaseController {
 	}
 
 	/**
-	 * 后台token2
+	 * token2
 	 */
 	public static boolean checklogin2(HttpServletRequest request) {
 		String token2 = request.getHeader("token2");

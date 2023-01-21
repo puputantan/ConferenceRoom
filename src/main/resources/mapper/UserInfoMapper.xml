@@ -77,8 +77,8 @@
     user_id, name, user_number, depart_id, sex_id, birthday, user_phone, user_card, user_name, 
     user_password, user_signature, register_time
   </sql>
-  
-<!--   这里是登录的第五步  resultMap是结果类型参数与上面的设置对应    parameterType是入参类型参数-->
+
+  <!-- This is the fifth step of login. resultMap is the result type parameter corresponding to the above settings. parameterType is the input parameter type parameter -->
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hbu.entity.UserInfoExample" >
     select
     <if test="distinct" >
@@ -94,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_userinfo
     where user_id = #{userId,jdbcType=VARCHAR}
@@ -110,16 +110,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.hbu.entity.UserInfo" >
-    insert into t_userinfo (user_id, name, user_number, 
-      depart_id, sex_id, birthday, 
-      user_phone, user_card, user_name, 
-      user_password, user_signature, register_time
-      )
-    values (#{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userNumber,jdbcType=VARCHAR}, 
-      #{departId,jdbcType=INTEGER}, #{sexId,jdbcType=SMALLINT}, #{birthday,jdbcType=VARCHAR}, 
-      #{userPhone,jdbcType=VARCHAR}, #{userCard,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{userPassword,jdbcType=VARCHAR}, #{userSignature,jdbcType=VARCHAR}, #{registerTime,jdbcType=VARCHAR}
-      )
+    insert into t_userinfo (user_id, name, user_number,
+                            depart_id, sex_id, birthday,
+                            user_phone, user_card, user_name,
+                            user_password, user_signature, register_time
+    )
+    values (#{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userNumber,jdbcType=VARCHAR},
+            #{departId,jdbcType=INTEGER}, #{sexId,jdbcType=SMALLINT}, #{birthday,jdbcType=VARCHAR},
+            #{userPhone,jdbcType=VARCHAR}, #{userCard,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+            #{userPassword,jdbcType=VARCHAR}, #{userSignature,jdbcType=VARCHAR}, #{registerTime,jdbcType=VARCHAR}
+           )
   </insert>
   <insert id="insertSelective" parameterType="com.hbu.entity.UserInfo" >
     insert into t_userinfo
@@ -253,17 +253,17 @@
   <update id="updateByExample" parameterType="map" >
     update t_userinfo
     set user_id = #{record.userId,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      user_number = #{record.userNumber,jdbcType=VARCHAR},
-      depart_id = #{record.departId,jdbcType=INTEGER},
-      sex_id = #{record.sexId,jdbcType=SMALLINT},
-      birthday = #{record.birthday,jdbcType=VARCHAR},
-      user_phone = #{record.userPhone,jdbcType=VARCHAR},
-      user_card = #{record.userCard,jdbcType=VARCHAR},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      user_password = #{record.userPassword,jdbcType=VARCHAR},
-      user_signature = #{record.userSignature,jdbcType=VARCHAR},
-      register_time = #{record.registerTime,jdbcType=VARCHAR}
+    name = #{record.name,jdbcType=VARCHAR},
+    user_number = #{record.userNumber,jdbcType=VARCHAR},
+    depart_id = #{record.departId,jdbcType=INTEGER},
+    sex_id = #{record.sexId,jdbcType=SMALLINT},
+    birthday = #{record.birthday,jdbcType=VARCHAR},
+    user_phone = #{record.userPhone,jdbcType=VARCHAR},
+    user_card = #{record.userCard,jdbcType=VARCHAR},
+    user_name = #{record.userName,jdbcType=VARCHAR},
+    user_password = #{record.userPassword,jdbcType=VARCHAR},
+    user_signature = #{record.userSignature,jdbcType=VARCHAR},
+    register_time = #{record.registerTime,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -310,16 +310,16 @@
   <update id="updateByPrimaryKey" parameterType="com.hbu.entity.UserInfo" >
     update t_userinfo
     set name = #{name,jdbcType=VARCHAR},
-      user_number = #{userNumber,jdbcType=VARCHAR},
-      depart_id = #{departId,jdbcType=INTEGER},
-      sex_id = #{sexId,jdbcType=SMALLINT},
-      birthday = #{birthday,jdbcType=VARCHAR},
-      user_phone = #{userPhone,jdbcType=VARCHAR},
-      user_card = #{userCard,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      user_password = #{userPassword,jdbcType=VARCHAR},
-      user_signature = #{userSignature,jdbcType=VARCHAR},
-      register_time = #{registerTime,jdbcType=VARCHAR}
+        user_number = #{userNumber,jdbcType=VARCHAR},
+        depart_id = #{departId,jdbcType=INTEGER},
+        sex_id = #{sexId,jdbcType=SMALLINT},
+        birthday = #{birthday,jdbcType=VARCHAR},
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+        user_card = #{userCard,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_password = #{userPassword,jdbcType=VARCHAR},
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+        register_time = #{registerTime,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>

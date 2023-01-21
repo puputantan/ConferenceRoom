@@ -28,7 +28,7 @@ public interface DicTimeMapper {
 
     int updateByPrimaryKey(DicTime record);
 
-    int selectBydescription(@Param("description") String  description);//根据描述查code
+    int selectBydescription(@Param("description") String  description);//Check the code according to the description
 
-    String selectByCode(@Param("code") int  code);//根据code查描述
+    String selectByCode(@Param("code") int  code);//Check the description according to the code
 }

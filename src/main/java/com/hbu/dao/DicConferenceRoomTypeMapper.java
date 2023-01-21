@@ -16,9 +16,9 @@ public interface DicConferenceRoomTypeMapper {
 
     int insertSelective(DicConferenceRoomType record);
 
-    DicConferenceRoomType selectByCode(@Param("code") int code);//根据code查会议室类型描述和系主任名字
+    DicConferenceRoomType selectByCode(@Param("code") int code);//Check the description of the conference room type and the name of the department head according to the code
 
-    int selectByDescription(@Param("description") String description);//通过类型描述查出code
+    int selectByDescription(@Param("description") String description);//Find code by type description
 
     List<DicConferenceRoomType> selectByExample(DicConferenceRoomTypeExample example);
 

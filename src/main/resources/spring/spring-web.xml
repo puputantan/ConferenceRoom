@@ -9,27 +9,27 @@
 	http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
-	<!-- 配置SpringMVC -->
-	<!-- 1.开启SpringMVC注解模式 -->
-	<!-- 简化配置： 
-		(1)自动注册DefaultAnootationHandlerMapping,AnotationMethodHandlerAdapter 
-		(2)提供一些列：数据绑定，数字和日期的format @NumberFormat, @DateTimeFormat, xml,json默认读写支持 
+	<!-- Configure SpringMVC -->
+	<!-- 1. Open SpringMVC annotation mode -->
+	<!-- Simplified configuration：
+		(1) Automatically register DefaultAnootationHandlerMapping, AnotationMethodHandlerAdapter
+		(2)Provide some columns: data binding, format of numbers and dates @NumberFormat, @DateTimeFormat, xml, json default read and write support
 	-->
 	<mvc:annotation-driven />
 	
-	<!-- 2.静态资源默认servlet配置
-		(1)加入对静态资源的处理：js,gif,png
-		(2)允许使用"/"做整体映射
+	<!-- 2. Static resource default servlet configuration
+		(1) Add the processing of static resources: js, gif, png
+		(2) Allow the use of "/" for overall mapping
 	 -->
 	 <mvc:default-servlet-handler/>
-	 
-	 <!-- 3.配置jsp 显示ViewResolver -->
+
+	<!-- 3. Configure jsp to display ViewResolver -->
 	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	 	<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 	 	<property name="prefix" value="/viewsnew/" />
 	 	<property name="suffix" value=".jsp" />
 	 </bean>
-	 
-	 <!-- 4.扫描web相关的bean   注意这里，意思是启动的时候java程序扫描这个目录下的java文件，识别带有注解的java-->
+
+	 <!-- 4. Scan web-related beans Note here, it means that the java program scans the java files in this directory when it starts, and identifies the java with annotations-->
 	 <context:component-scan base-package="com.hbu.web" />
 </beans>

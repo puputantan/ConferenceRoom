@@ -28,9 +28,9 @@ public interface RefConferenceMapper {
 
     int updateByPrimaryKey(RefConference record);
 
-    int count();//查询已预约总数
+    int count();//Query the total number of appointments
 
     List<RefConference> selectByDate(@Param("date") String date);
     List<RefConference> selectByDateRoomId(@Param("date") String date,@Param("conferenceRoomId") long conferenceRoomId);
-    //int usedRoomId(@Param("date") String date,@Param("time") String time);//查询该条件下，已经预约的会议室id
+    //int usedRoomId(@Param("date") String date,@Param("time") String time);//Query the id of the conference room that has been reserved under this condition
 }
