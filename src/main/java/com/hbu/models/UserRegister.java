@@ -1,20 +1,20 @@
 package com.hbu.models;
 
 /**
- * 用户注册
- * @author jensin
- *2020-03-24
+ * user registration
+ * @author caipuyu
+ *2023-01-20
  *
- *name		类型：字符串		姓名
-userNumber	类型：字符串		学号
-departId	类型：int			学院ID
-sexId		类型：int			性别ID
-birthday	类型：date			生日
-userPhone	类型：string		手机号
-numberCheck	类型：int			验证码
-userCard	类型：string		学生证路径
-userName	类型：String		用户昵称
-userPassword类型：String		用户密码
+name       Type: string name
+userNumber Type: string student number
+departId   Type: int College ID
+sexId      type: int gender ID
+birthday   type: date birthday
+userPhone  type: string phone number
+numberCheck type: int verification code
+userCard   type: string student card path
+userName   Type: String user nickname
+userPassword type: String user password
 
  */
 
@@ -97,5 +97,5 @@ public class UserRegister {
 				+ ", userName=" + userName + ", userPassword=" + userPassword + ", numberCheck=" + numberCheck + "]";
 	}
 
-	
+
 }

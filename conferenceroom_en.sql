@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 本地
+ Source Server         : local
  Source Server Type    : MySQL
  Source Server Version : 80026
  Source Host           : localhost:3306
@@ -262,13 +262,13 @@ INSERT INTO `t_conference_room_appointment` VALUES (45, 'lst', '2017051502', 12,
 INSERT INTO `t_conference_room_appointment` VALUES (52, NULL, '2017051501', 18, 100, '', NULL, '2020-05-13', '10:00--13:00', 3, 6, 3, '', b'0');
 INSERT INTO `t_conference_room_appointment` VALUES (53, NULL, '2017051501', 20, 100, '', NULL, '2020-05-01', '10:00--13:00', 3, 6, 3, '', b'0');
 INSERT INTO `t_conference_room_appointment` VALUES (54, NULL, '2017051501', 22, 1, '', NULL, '2020-07-12', '9:00--11:00', 9, 11, 3, '', b'0');
-INSERT INTO `t_conference_room_appointment` VALUES (108, 'txx', '20200724', 22, 60, '无', NULL, '2020-07-26', '11:00--14:00', 11, 14, 1, NULL, b'1');
-INSERT INTO `t_conference_room_appointment` VALUES (110, 'txx', '20200724', 22, 60, '无', NULL, '2020-07-30', '9:00--14:00', 9, 14, 1, NULL, b'0');
-INSERT INTO `t_conference_room_appointment` VALUES (111, 'txx', '20200724', 9, 80, '无', 'No multimedia required, no notes', '2020-07-30', '9:00--15:00', 9, 15, 1, NULL, b'1');
-INSERT INTO `t_conference_room_appointment` VALUES (131, 'lst', '2017051501', 6, 30, '无', NULL, '2020-07-27', '14:00--16:00', 14, 16, 3, NULL, b'0');
-INSERT INTO `t_conference_room_appointment` VALUES (132, 'lst', '2017051501', 9, 30, '无', 'No multimedia required, no notes', '2020-07-27', '14:00--16:00', 14, 16, 3, '', b'0');
-INSERT INTO `t_conference_room_appointment` VALUES (143, '1', '123', 31, 4, '无', NULL, '2020-07-29', '13:00--14:00', 13, 14, 1, NULL, b'0');
-INSERT INTO `t_conference_room_appointment` VALUES (144, '1', '123', 27, 6, '无', 'Multimedia required, no notes', '2020-07-29', '13:00--14:00', 13, 14, 3, '', b'0');
+INSERT INTO `t_conference_room_appointment` VALUES (108, 'txx', '20200724', 22, 60, '', NULL, '2020-07-26', '11:00--14:00', 11, 14, 1, NULL, b'1');
+INSERT INTO `t_conference_room_appointment` VALUES (110, 'txx', '20200724', 22, 60, '', NULL, '2020-07-30', '9:00--14:00', 9, 14, 1, NULL, b'0');
+INSERT INTO `t_conference_room_appointment` VALUES (111, 'txx', '20200724', 9, 80, '', 'No multimedia required, no notes', '2020-07-30', '9:00--15:00', 9, 15, 1, NULL, b'1');
+INSERT INTO `t_conference_room_appointment` VALUES (131, 'lst', '2017051501', 6, 30, '', NULL, '2020-07-27', '14:00--16:00', 14, 16, 3, NULL, b'0');
+INSERT INTO `t_conference_room_appointment` VALUES (132, 'lst', '2017051501', 9, 30, '', 'No multimedia required, no notes', '2020-07-27', '14:00--16:00', 14, 16, 3, '', b'0');
+INSERT INTO `t_conference_room_appointment` VALUES (143, '1', '123', 31, 4, '', NULL, '2020-07-29', '13:00--14:00', 13, 14, 1, NULL, b'0');
+INSERT INTO `t_conference_room_appointment` VALUES (144, '1', '123', 27, 6, '', 'Multimedia required, no notes', '2020-07-29', '13:00--14:00', 13, 14, 3, '', b'0');
 
 -- ----------------------------
 -- Table structure for t_notice
@@ -373,25 +373,25 @@ INSERT INTO `t_user` VALUES (23, NULL, '111', '111', '111', NULL, '1002913814@qq
 INSERT INTO `t_user` VALUES (24, NULL, '111', '111', '111', NULL, '1002913814@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:29:03', NULL, b'1', 2, 'empty');
 INSERT INTO `t_user` VALUES (25, NULL, '20170515011', '2013dao2014', 'yyc', NULL, '1802302924@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:26', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (26, NULL, '20180515002', '123456', 'ch', NULL, '444187283@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:27', NULL, b'1', 1, NULL);
-INSERT INTO `t_user` VALUES (27, NULL, '20180515019', '123456', 'ly', '无', '951789947@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:27', NULL, b'1', 1, NULL);
+INSERT INTO `t_user` VALUES (27, NULL, '20180515019', '123456', 'ly', '', '951789947@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:27', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (28, NULL, '20180515019', '123456', 'ly', NULL, '951789947@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:29:04', NULL, b'1', 2, 'empty');
 INSERT INTO `t_user` VALUES (29, NULL, '20200724', '20200724', 'txx', NULL, '1664669578@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:28', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (30, NULL, '123456789', '123456', 'fxm', NULL, '3241512032@qq.com', 'Department of Finance', NULL, '2023-01-22 03:28:44', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (31, NULL, '20180514042', '633484410X', 'lx', NULL, '2571190618@qq.com', 'Department of Finance', NULL, '2023-01-22 03:28:43', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (32, NULL, '20180516041', 'czx620721', 'czx', NULL, '1045044360@qq.com', 'Department of Tourism Management', NULL, '2023-01-22 03:28:14', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (33, NULL, '20180515001', 'qweasdzxc', 'gz', NULL, '1346264621@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:22', NULL, b'1', 1, NULL);
-INSERT INTO `t_user` VALUES (34, NULL, '20180517008', '123456', 'xyz', '无', '142835177@qq.com', 'Department of Archives', NULL, '2023-01-22 03:28:24', NULL, b'1', 1, NULL);
+INSERT INTO `t_user` VALUES (34, NULL, '20180517008', '123456', 'xyz', '', '142835177@qq.com', 'Department of Archives', NULL, '2023-01-22 03:28:24', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (35, NULL, '20180512001', '123456', 'f', NULL, '123456789@qq.com', 'Department of Business Administration', NULL, '2023-01-22 03:29:10', NULL, b'1', 2, 'empty');
 INSERT INTO `t_user` VALUES (36, NULL, '2018003003', '8888', 'xz', '', '951789947@qq.com', 'Department of Library Science', NULL, '2023-01-22 03:27:44', NULL, b'1', 1, NULL);
-INSERT INTO `t_user` VALUES (37, NULL, '123', '1', '1', '无', '1379409273@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:29', NULL, b'1', 1, NULL);
-INSERT INTO `t_user` VALUES (38, NULL, '352', '12', 'lstdfsfg', '无', '1173080299@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:29:06', NULL, b'1', 2, 'empty');
+INSERT INTO `t_user` VALUES (37, NULL, '123', '1', '1', '', '1379409273@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:29', NULL, b'1', 1, NULL);
+INSERT INTO `t_user` VALUES (38, NULL, '352', '12', 'lstdfsfg', '', '1173080299@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:29:06', NULL, b'1', 2, 'empty');
 INSERT INTO `t_user` VALUES (39, NULL, '20170515031', '12', 'sdf', NULL, '1173080299@qq.com', 'Department of Tourism Management', NULL, '2023-01-22 03:29:13', NULL, b'1', 2, 'empty');
 INSERT INTO `t_user` VALUES (40, NULL, '20180515013', '1414612316qq', 'zxy', NULL, '1414612316@qq.com', 'Department of Archives', NULL, '2023-01-22 03:28:24', NULL, b'0', 1, NULL);
 INSERT INTO `t_user` VALUES (41, NULL, '1111111222', '1414612316qq', 'sss', NULL, '1414612316@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:29:00', NULL, b'1', 2, 'empty');
 INSERT INTO `t_user` VALUES (42, NULL, '1', '2', '3', '', '', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:24', NULL, b'0', 1, NULL);
 INSERT INTO `t_user` VALUES (43, NULL, '20180515013', '1414612316qq', 'zxy', NULL, '1414612316@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:30', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (44, NULL, '1040788', '041288', 'klq', NULL, '123456789@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:30', NULL, b'1', 1, NULL);
-INSERT INTO `t_user` VALUES (45, NULL, '20174229020', '123456', 'zxy', '无', '1041611691@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:31', NULL, b'1', 1, NULL);
+INSERT INTO `t_user` VALUES (45, NULL, '20174229020', '123456', 'zxy', '', '1041611691@qq.com', 'Department of Information Management Engineering', NULL, '2023-01-22 03:27:31', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (46, NULL, '201822480914', 'zxl.0808', 'zxl', NULL, '770015272@qq.com', 'Department of Tourism Management', NULL, '2023-01-22 03:28:14', NULL, b'1', 1, NULL);
 INSERT INTO `t_user` VALUES (47, NULL, '20170515012', '2013dao2014', 'yyc', NULL, '1802302924@qq.com', 'Department of Library Science', NULL, '2023-01-22 03:27:58', NULL, b'0', 1, NULL);
 INSERT INTO `t_user` VALUES (48, NULL, '20170515013', '2013dao2014', 'yycc', NULL, '1802302924@qq.com', 'Department of Business Administration', NULL, '2023-01-22 03:29:08', NULL, b'1', 2, 'empty');

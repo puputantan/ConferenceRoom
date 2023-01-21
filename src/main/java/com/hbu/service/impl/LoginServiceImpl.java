@@ -39,7 +39,7 @@ public class LoginServiceImpl  implements LoginService {
             return 0;
         }else{
             String pw=tAdminMapper.selectByUsername(username);
-            SendMail.sendMessage(mail,"你的密码是："+pw);
+            SendMail.sendMessage(mail,"your password is："+pw);
             return 1;
         }
     }
@@ -78,7 +78,7 @@ public class LoginServiceImpl  implements LoginService {
     public int userregister(String username, String mailbox,String pw,String name,String department){
         TUser user = tUserMapper.selectAllByUsername(username);
         if (user == null){
-            //null说明没有注册过
+            //null means no registration
             TUser t = new TUser();
             t.setUsername(username);
             t.setMailbox(mailbox);
@@ -87,7 +87,7 @@ public class LoginServiceImpl  implements LoginService {
             t.setName(name);
             t.setIsdel(true);
             t.setStatus((short) 0);
-        //不能直接注册，需要审核（默认为未处理）
+            //Cannot be registered directly, need review (default is unprocessed)
             // return 1;
             if(tUserMapper.insert(t) !=0 ){
                 return 1;

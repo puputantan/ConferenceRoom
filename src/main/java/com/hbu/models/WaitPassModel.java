@@ -1,7 +1,7 @@
 package com.hbu.models;
 
 public class WaitPassModel {
-    private Integer appointmentId;//预约id
+    private Integer appointmentId;
 
     private String name;
 
@@ -9,7 +9,7 @@ public class WaitPassModel {
 
     private String department;
 
-    private Long conferenceRoomId;//预约会议室id
+    private Long conferenceRoomId;
 
     private String roomName;
 
@@ -18,16 +18,16 @@ public class WaitPassModel {
     private Integer maxNum;
 
     private String theme;
-    
+
     private String date;
 
     public String getDate() {
-		return date;
-	}
+        return date;
+    }
 
-	public void setDate(String date) {
-		this.date = date;
-	}
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     private String time;
 
@@ -35,7 +35,7 @@ public class WaitPassModel {
 
     private Integer endtimeCode;
 
-    private Integer examineStatus;//审核状态
+    private Integer examineStatus;
 
     public String getExamineReason() {
         return examineReason;
@@ -45,7 +45,7 @@ public class WaitPassModel {
         this.examineReason = examineReason;
     }
 
-    private String examineReason;//审核理由
+    private String examineReason;
 
     private String specialneeds;
 

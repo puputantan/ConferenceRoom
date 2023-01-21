@@ -45,7 +45,7 @@ public class UserManageServiceImpl implements UserManageService {
         user.setIsdel(true);
         user.setStatus((short)1);
         int num = tUserMapper.insert(user);
-        //不成功返回0
+        //Unsuccessful return 0
         if(num == 0) {
             return 0;
         }else {
@@ -64,7 +64,7 @@ public class UserManageServiceImpl implements UserManageService {
         user.setPhone(t.getPhone());
         user.setDepartment(t.getDepartment());
         int num = tUserMapper.updateByPrimaryKeySelective(user);
-        //不成功返回0
+        //Unsuccessful return 0
         if(num == 0) {
             return 0;
         }else {
@@ -79,7 +79,7 @@ public class UserManageServiceImpl implements UserManageService {
         TUser t = tUserMapper.selectByPrimaryKey(id);
         String username = t.getUsername();
         /**
-         * 判断预约表，只要有相关会议就不能删
+         * Judging the appointment table, as long as there is a related meeting, it cannot be deleted
          */
         TConferenceRoomAppointmentExample example =new TConferenceRoomAppointmentExample();
         TConferenceRoomAppointmentExample.Criteria criteria= example.createCriteria();
